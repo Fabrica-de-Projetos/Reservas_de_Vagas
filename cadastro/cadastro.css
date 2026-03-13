@@ -1,0 +1,145 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+/*chamada: font-family: "Inter", sans-serif;*/
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    background-color: #1d1d1d;
+}
+
+.centralizar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.botao-modelo-principal{
+    background-color: #FFCB00;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    font-weight: 600;
+    font-size: large;
+    cursor: pointer;
+}
+
+
+@media (max-width: 576px){
+    .logo{
+        width: 13rem;
+        margin-bottom: 30px;
+    }
+    .sessao-apresentacao{
+        margin-top: 40px;
+        margin-bottom: 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .titulo-apresentacao{
+        font-family: "Inter", sans-serif;
+        font-weight:700;
+        font-size: 30px;
+        color: rgb(222, 222, 222);  
+    }
+
+    .mensagem-apresentacao{
+        font-family: "Inter", sans-serif;
+        font-weight: 500;
+        color: #FFCB00;
+        font-size: 20px;
+    }
+
+    .background-card{
+        display: flex;
+        justify-content: center;
+        margin-bottom: 40px;
+    }
+    /*Estilização do input*/
+    .input-container{
+        width: 90%;
+        padding: 20px;
+        padding-top: 30px;
+        background-color:#323232;
+        border: solid 1px #6B6B6B;
+        border-radius: 25px;
+    }
+
+    .input-box{
+        position: relative;
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        justify-content: space-between;
+        background-color: #262626;
+        border: solid 1px #6B6B6B;
+        border-radius: 10px;
+        margin-top: 50px;
+    }
+
+    .input-descricao{
+        left: 4rem;
+        color: #c3c3c3;
+        position: absolute;
+        background: none;
+        cursor: text;
+        pointer-events: none;
+        transition: all 0.3s ease;
+    }
+
+    .input-icone{
+        background: none;
+    }
+
+    .input-icone img{
+        background: none;
+        margin: 0px;
+        width: 25px;
+        height: 25px
+    }
+
+    .input-box input{
+        font-size: large;
+        color: #c3c3c3;
+        width: 100%;
+        height: 100%;
+        padding: 10px;
+        border: none;
+        background-color: #262626;
+        outline: none;
+    }
+
+    .input-box:focus-within{
+        border-color: #FFCB00;
+        transition: all 0.3s ease;
+    }
+
+    .input-box input:focus{
+        outline: none;
+    }
+
+    .input-box input:focus + .input-descricao,
+    .input-box input:not(:placeholder-shown) + .input-descricao {
+        transform: translateY(-250%);
+        left: 0%;
+        color: rgb(222, 222, 222)
+    }
+
+    .botao-modelo-principal{
+        width: 50%;
+    }
+
+}
