@@ -1,5 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
-/*chamada: font-family: "Inter", sans-serif;*/
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 *{
     margin: 0;
     padding: 0;
@@ -7,7 +6,7 @@
 }
 
 body{
-    font-family: "Inter", sans-serif;
+    font-family: "Montserrat", sans-serif;
     font-weight: 400;
     background-color: #1d1d1d;
 }
@@ -36,9 +35,26 @@ body{
 
 
 @media (max-width: 576px){
-    .logo{
-        width: 13rem;
-        margin-bottom: 30px;
+    .logo-spot-livre{
+        width: 189px;
+        height: 37px;
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+    .logo-spot-livre .logo-dsin {
+        width: 32px;
+        height: 32px;
+    }
+    .spot-livre-spot {
+        color: #FECC02;
+        font-size: 30px;
+    }
+    .spot-livre-livre {
+        color: white;
     }
     .sessao-apresentacao{
         margin-top: 40px;
@@ -50,14 +66,15 @@ body{
     }
 
     .titulo-apresentacao{
-        font-family: "Inter", sans-serif;
+        margin-top: 20px;
+        font-family: "Montserrat", sans-serif;
         font-weight:700;
         font-size: 30px;
-        color: rgb(222, 222, 222);  
+        color: white;  
     }
 
     .mensagem-apresentacao{
-        font-family: "Inter", sans-serif;
+        font-family: "Montserrat", sans-serif;
         font-weight: 500;
         color: #FFCB00;
         font-size: 20px;
