@@ -1,29 +1,34 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
-*{
+
+* {
     margin: 0;
     padding: 0;
+    border: 0;
     box-sizing: border-box;
 }
 
-body{
+body {
     font-family: "Montserrat", sans-serif;
     font-weight: 400;
     background-color: #1d1d1d;
 }
 
-.centralizar{
+.centralizar {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: row !important;
+    gap: 0 !important;
 }
 
-.container{
+.container {
     display: flex;
     justify-content: center;
     flex-direction: column;
+    padding-top: 30px;
 }
 
-.botao-modelo-principal{
+.botao-modelo-principal {
     background-color: #FFCB00;
     border: none;
     border-radius: 10px;
@@ -31,132 +36,158 @@ body{
     font-weight: 600;
     font-size: large;
     cursor: pointer;
+    transition: all 0.3s ease;
+    width: 50%;
 }
 
+.botao-modelo-principal:hover {
+      box-shadow: 0 0 15px #FFCB00;
+}
 
-@media (max-width: 576px){
-    .logo-spot-livre{
-        width: 189px;
-        height: 37px;
-        display: flex;
-        flex-direction: row;
-        gap: 10px;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-    }
-    .logo-spot-livre .logo-dsin {
-        width: 32px;
-        height: 32px;
-    }
-    .spot-livre-spot {
-        color: #FECC02;
-        font-size: 30px;
-    }
-    .spot-livre-livre {
-        color: white;
-    }
-    .sessao-apresentacao{
-        margin-top: 40px;
-        margin-bottom: 40px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-    }
+.logo-spot-livre{
+    width: 189px;
+    height: 37px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    user-select: none;
+}
+.logo-spot-livre .logo-dsin {
+    width: 32px;
+    height: 32px;
+}
+.spot-livre-spot {
+    color: #FECC02;
+    font-size: 30px;
+}
+.spot-livre-livre {
+    color: white;
+}
+.sessao-apresentacao{
+    margin-top: 40px;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
 
-    .titulo-apresentacao{
-        margin-top: 20px;
-        font-family: "Montserrat", sans-serif;
-        font-weight:700;
-        font-size: 30px;
-        color: white;  
-    }
+.titulo-apresentacao{
+    margin-top: 20px;
+    font-family: "Montserrat", sans-serif;
+    font-weight:700;
+    font-size: 30px;
+    color: white;  
+}
 
-    .mensagem-apresentacao{
-        font-family: "Montserrat", sans-serif;
-        font-weight: 500;
-        color: #FFCB00;
-        font-size: 20px;
-    }
+.mensagem-apresentacao{
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    color: #FFCB00;
+    font-size: 20px;
+}
 
-    .background-card{
-        display: flex;
-        justify-content: center;
-        margin-bottom: 40px;
-    }
-    /*Estilização do input*/
-    .input-container{
-        width: 90%;
-        padding: 20px;
-        padding-top: 30px;
-        background-color:#323232;
-        border: solid 1px #6B6B6B;
-        border-radius: 25px;
-    }
+.background-card{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+/*Estilização do input*/
+.input-container{
+    width: 90%;
+    max-width: 600px;
+    padding: 20px;
+    padding-top: 30px;
+    background-color:#323232;
+    border: solid 1px #6B6B6B;
+    border-radius: 25px;
+}
 
-    .input-box{
-        position: relative;
-        display: flex;
-        align-items: center;
-        padding: 10px;
-        justify-content: space-between;
-        background-color: #262626;
-        border: solid 1px #6B6B6B;
-        border-radius: 10px;
-        margin-top: 50px;
-    }
+.banner_car {
+    max-width: 45vw;
+}
 
-    .input-descricao{
-        left: 4rem;
-        color: #c3c3c3;
-        position: absolute;
-        background: none;
-        cursor: text;
-        pointer-events: none;
-        transition: all 0.3s ease;
-    }
+.mb_view {
+    display: none;
+}
 
-    .input-icone{
-        background: none;
-    }
+.pc_view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 70px;
+}
 
-    .input-icone img{
-        background: none;
-        margin: 0px;
-        width: 25px;
-        height: 25px
-    }
+.input-box{
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    justify-content: space-between;
+    background-color: #262626;
+    border: solid 1px #6B6B6B;
+    border-radius: 10px;
+    margin-top: 50px;
+}
 
-    .input-box input{
-        font-size: large;
-        color: #c3c3c3;
-        width: 100%;
-        height: 100%;
-        padding: 10px;
-        border: none;
-        background-color: #262626;
-        outline: none;
-    }
+.input-descricao{
+    left: 4rem;
+    color: #c3c3c3;
+    position: absolute;
+    background: none;
+    cursor: text;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
 
-    .input-box:focus-within{
-        border-color: #FFCB00;
-        transition: all 0.3s ease;
-    }
+.input-icone{
+    background: none;
+}
 
-    .input-box input:focus{
-        outline: none;
-    }
+.input-icone img{
+    background: none;
+    margin: 0px;
+    width: 25px;
+    height: 25px
+}
 
-    .input-box input:focus + .input-descricao,
-    .input-box input:not(:placeholder-shown) + .input-descricao {
-        transform: translateY(-250%);
-        left: 0%;
-        color: rgb(222, 222, 222)
-    }
+.input-box input{
+    font-size: large;
+    color: #c3c3c3;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    border: none;
+    background-color: #262626;
+    outline: none;
+}
 
-    .botao-modelo-principal{
-        width: 50%;
+.input-box:focus-within{
+    border-color: #FFCB00;
+    transition: all 0.3s ease;
+}
+
+.input-box input:focus{
+    outline: none;
+}
+
+.input-box input:focus + .input-descricao,
+.input-box input:not(:placeholder-shown) + .input-descricao {
+    transform: translateY(-250%);
+    left: 0%;
+    color: rgb(222, 222, 222)
+}
+
+@media (max-width: 1000px) {
+    .pc_view {
+        display: none;
+    }
+    .mb_view {
+    display: flex;
     }
 
 }
