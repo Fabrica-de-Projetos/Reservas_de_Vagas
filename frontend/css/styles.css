@@ -1,33 +1,37 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
+*{
+    box-sizing: border-box;
+}
 body {
-    background-color: #1D1D1D;
-    background: linear-gradient(0deg, #0a0a0a, #1D1D1D);
+    margin: 0;
+    background-color: #000; /* opcional pra preencher espaço vazio */
     color: white;
     font-family: "Montserrat", sans-serif;
+}
+
+.container-comeco{
+    display: flex;
+    justify-content: space-between;
+}
+
+.formulario-login-cadastro{
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
     justify-content: center;
-    height: 100%;
-
-    
-}
-main{
-    margin: 50px;
+    gap: 40px;
+    margin-top: 60px;
+    padding: 30px;
 }
 
+/*CONSTRUÇÃO DO LOGO*/
 .logo-spot-livre{
+        align-items: center;
+        display: flex;
         width: 189px;
         height: 37px;
-        display: flex;
-        flex-direction: row;
         gap: 10px;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
     }
     .logo-spot-livre .logo-dsin {
         width: 32px;
@@ -41,9 +45,105 @@ main{
         color: white;
     }
 
+    .container-header{
+        position: fixed;
+        display: flex;
+        align-items: center;
+        top: 0;
+        padding: 10px;
+        width: 100%;
+        height: 80px;
+        backdrop-filter: blur(5px);
+        border-bottom: solid 1px #ffcc002c;
+    }
+
+    .spot-livre-frase{
+        width: 350px;
+        font-size: 40px;
+    }
+
+    .spot-livre-frase p{
+        margin: 0;
+    }
+
+    /*Botão principal*/
+    .button-garanta-sua-vaga{
+        background-color: #FFCB00;
+        width: 300px;
+        height: 50px;
+        font-family: "Montserrat", sans-serif;
+        font-size: 16px;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .icone_seta{
+        display: none;
+        transition: all 0.3s ease;
+    }
+
+    .descricao-botao-hover{
+        display: none;
+    }
+
+
+    .button-garanta-sua-vaga:hover{
+         box-shadow: 0px 1px 30px 10px #ffd90266;
+    }
+
+    .container-login-e-registro{
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+        
+    }
+
+    .login-e-registro a {
+        text-decoration: none;
+        font-weight: 10px;
+        color: white;
+    }
+
+    .login-e-registro{
+        font-size: 15px;  
+        font-weight: 100;
+    }
+
+@media (min-width:577px){
+    .container-api-google-e-apple{
+        display: flex;
+        justify-content: space-between  ;
+        width: 80%;
+    }
+
+    .container-api-google-e-apple button{
+        background: none;
+        padding: 15px;
+        width: 5rem;
+        border: 1px solid #828282;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .container-api-google-e-apple button:hover{
+        background: none;
+        border: 1px solid #FECC02;
+        box-shadow: 0px 1px 30px 10px #ffd90266;
+        transition: all 0.3s ease;
+    }
+
+    .container-api-google-e-apple b{
+        display: none;
+    }
+}
+
 @media (max-width: 576px){
     /* Header */
     .container-header{
+        backdrop-filter:none;
         width: 322px;
         height: 235px;
         display: flex;
@@ -80,6 +180,15 @@ main{
         height: 148px;
         font-size: 30px;
     }
+
+    body{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+        background-color: #0505056d;
+    }
     /* Main */
     /* Botão de garantir vaga com textos em baixo de logar ou registrar */
     .container-login-e-registro{
@@ -88,16 +197,6 @@ main{
         align-items: center;
         justify-content: center;
         text-align: center;
-    }
-    .button-garanta-sua-vaga{
-        background-color: #FFCB00;
-        width: 300px;
-        height: 50px;
-        font-family: "Montserrat", sans-serif;
-        font-size: 16px;
-        border: none;
-        border-radius: 25px;
-        box-shadow: 0px 5px 100px 15px #DFC32666;
     }
     .login-e-registro{
         width: 326px;
@@ -167,9 +266,5 @@ main{
 }
 
 @media (min-width: 576.1px) and (max-width: 768px){
-    .container-header{
-        width: 100%;
-        display: flex;
-        justify-content: space-between; 
-    }
+    
 }
