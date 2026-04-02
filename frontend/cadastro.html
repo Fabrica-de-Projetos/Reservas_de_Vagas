@@ -3,81 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="img/dsin-logo.png">
     <link rel="stylesheet" href="css/cadastro.css">
     <title>Tela Cadastro </title>
 </head>
 <body>
     <main>
         <div class="container">
-            <section class="sessao-apresentacao">
+            <section class="sessao-apresentacao mb_view">
                 <div class="logo-spot-livre">
                     <img class="logo-dsin" src="img/dsin-logo.png" alt="Dsin Logo">
                     <p class="spot-livre-spot"><b>Spot<span class="spot-livre-livre">livre</span></b></p>
                 </div>
                 <h1 class="titulo-apresentacao">Seja bem vindo!</h1>
-                <h3 class="mensagem-apresentacao">chegou, registrou, estacionou</h3>
+                <h3 class="mensagem-apresentacao">Chegou, registrou, estacionou</h3>
             </section>
             <section class="sessao-cadastro">
                 <div class="background-card">
-                    <div class="input-container">
-
-                        <!--Nome completo-->
-                        <label class="input-box">
-                            <span class="input-icone">
-                                <img src="img/icones/usuario.png" alt="">
-                            </span>
-                            <input placeholder=" " type="text">
-                            <span class="input-descricao">Nome completo</span>
-                        </label>
-
-                        <!--Email-->
-                        
-                        <label class="input-box">
-                            <span class="input-icone">
-                                <img src="img/icones/email.png" alt="">
-                            </span>
-                            <input placeholder=" " type="text">
-                            <span class="input-descricao">Email</span>
-                        </label>
-
-                        <!--Senha-->
-                        <label class="input-box">
-                            <span class="input-icone">
-                                <img src="img/icones/senha.png" alt="">
-                            </span>
-                            <input placeholder=" " type="text">
-                            <span class="input-descricao">Senha</span>
-                        </label>
-
-                        <!--Modelo do veículo-->
-                        <label class="input-box">
-                            <span class="input-icone">
-                                <img src="img/icones/carro.png" alt="">
-                            </span>
-                            <input placeholder=" " type="text">
-                            <span class="input-descricao">Modelo do veículo</span>
-                        </label>
-
-                        <!--placa do veículo-->
-                        <label class="input-box">
-                            <span class="input-icone">
-                                <img src="img/icones/placa.png" alt="">
-                            </span>
-                            <input placeholder=" " type="text">
-                            <span class="input-descricao">placa do veículo</span>
-                        </label>
-                        <div class="centralizar">
-                            <button style="margin-top: 30px;" class="botao-modelo-principal">Cadastrar</button>
+                    <div class="pc_view">
+                        <section class="sessao-apresentacao">
+                            <div class="logo-spot-livre">
+                                <img class="logo-dsin" src="img/dsin-logo.png" alt="Dsin Logo">
+                                <p class="spot-livre-spot"><b>Spot<span class="spot-livre-livre">livre</span></b></p>
+                            </div>
+                            <h1 class="titulo-apresentacao">Seja bem vindo!</h1>
+                            <h3 class="mensagem-apresentacao">Chegou, registrou, estacionou</h3>
+                        </section>
+                        <img src="img/banner.svg" alt="Banner" class="banner_car">
+                        <div style="margin-bottom: 30px;" class="centralizar pc_view">
+                            <span style="color: white; margin-right: 5px;">Já possui uma conta?</span>
+                            <a style="color: #FFCB00; text-decoration: none;" href="index.html">fazer login</a>
                         </div>
+                    </div>
+                    <div class="input-container">
+                        <form id="formulario-cadastro">
+                            <!--Nome completo-->
+                            <label class="input-box">
+                                <span class="input-icone">
+                                    <img src="img/icones/usuario.png" alt="Icone Usuário">
+                                </span>
+                                <input id="input-nome-completo" placeholder=" " type="text" required>
+                                <span class="input-descricao">Nome completo</span> <span style="color: #ff0000;">*</span>
+                            </label>
+
+                            <!--Email-->
+                            
+                            <label class="input-box">
+                                <span class="input-icone">
+                                    <img src="img/icones/email.png" alt="Icone Email">
+                                </span>
+                                <input id="input-email" placeholder=" " type="text" required>
+                                <span class="input-descricao">Email</span> <span style="color: #ff0000;">*</span>
+                            </label>
+                            <span id="mensagem-erro-email" class="mensagem-erro">Digite um email válido</span>
+
+                            <!--Senha-->
+                            <label class="input-box">
+                                <span class="input-icone">
+                                    <img src="img/icones/senha.png" alt="Icone Senha">
+                                </span>
+                                <input id="input-senha" placeholder=" " type="text" required>
+                                <span class="input-descricao">Senha</span> <span style="color: #ff0000;">*</span>
+                            </label>
+
+                            <label class="input-box">
+                                <span class="input-icone">
+                                    <img src="img/icones/senha.png" alt="Icone Senha">
+                                </span>
+                                <input id="input-confirmar-senha" placeholder=" " type="text" required>
+                                <span class="input-descricao">Confirme a senha</span> <span style="color: #ff0000;">*</span>
+                            </label>
+                            <span id="mensagem-erro-senha" class="mensagem-erro">As senhas devem ser correspondentes</span>
+
+                            <!--Modelo do veículo-->
+                            <label class="input-box">
+                                <span class="input-icone">
+                                    <img src="img/icones/carro.png" alt="Icone Carro">
+                                </span>
+                                <input id="input-modelo-veiculo" placeholder=" " type="text">
+                                <span class="input-descricao">Modelo do veículo</span>
+                            </label>
+
+                            <!--placa do veículo-->
+                            <label class="input-box">
+                                <span class="input-icone">
+                                    <img src="img/icones/placa.png" alt="Icone Placa">
+                                </span>
+                                <input id="input-placa" placeholder=" " type="text">
+                                <span class="input-descricao">Placa do veículo</span>
+                            </label>
+                            <div class="centralizar">
+                                <button id="botao-submit" type="button" style="margin-top: 30px;" class="botao-modelo-principal">Cadastrar</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </section>
-            <div style="margin-bottom: 30px;" class="centralizar">
+            <div style="margin-bottom: 30px;" class="centralizar mb_view">
                 <span style="color: white; margin-right: 5px;">Já possui uma conta?</span>
-                <a style="color: #FFCB00; text-decoration: none ;" href="index.html">fazer login</a>
+                <a style="color: #FFCB00; text-decoration: none;" href="index.html">fazer login</a>
             </div>
         </div>
     </main>
-    
 </body>
+<script src="js/cadastro.js"></script>
 </html>

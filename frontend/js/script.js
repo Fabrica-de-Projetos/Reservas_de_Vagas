@@ -5,3 +5,4 @@ let carrosel_membros = document.querySelector(".carrossel-membros")
 toggle.addEventListener("click", () => {
     navlist.classList.toggle("active")
 })
+
