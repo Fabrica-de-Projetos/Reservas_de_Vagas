@@ -15,7 +15,17 @@ class UsuarioController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            $usuarios = Usuario::all();
+            return response()->json($usuarios, 200);
+        } catch (\Throwable $e) {
+            return response()->json(
+                [
+                    'message' => 'Erro ao recuperar usuários',
+                    'error' => $e->getMessage(),
+                ],500
+            );
+        }
     }
 
     /**
