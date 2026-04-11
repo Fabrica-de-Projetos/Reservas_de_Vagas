@@ -55,7 +55,6 @@ class UsuarioController extends Controller
                 'data' => $usuario
             ], 201);
         } catch (ValidationException $e) { // se der um erro do tipo "ValidationException" cai nesse catch
-            /** @var ValidationException $e */
             return response()->json([
                 'message' => 'Erro de validação.',
                 'errors' => $e->errors()
