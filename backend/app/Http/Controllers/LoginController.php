@@ -28,8 +28,8 @@ class LoginController extends Controller
             'message' => 'Usuário autenticado com sucesso.',
             'usuario' => [
                 'id' => $usuario->id,
-                'nome' => $usuario->nome_usuario,
-                'email' => $usuario->email
+                'nome' => $usuario->nome,
+                'email' => $usuario->email,
             ]
         ], 200);
     }
