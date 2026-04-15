@@ -67,7 +67,7 @@ class UsuarioController extends Controller
         } catch (ValidationException $e) { // se der um erro do tipo "ValidationException" cai nesse catch
             return response()->json([
                 'message' => 'Erro de validação.',
-                'errors' => $e->errors()
+                'errors' => $e->getMessage()
             ], 422);
         } catch (\Throwable $e) { // qualquer outro tipo de erro, exceção no try que implemente a interface "Throwable" cai aqui
             return response()->json([
