@@ -19,9 +19,6 @@ class UsuarioSeeder extends Seeder
                 'nome' => "Usuário $i",
                 'email' => "usuario$i@email.com",
                 'senha' => Hash::make('123456'),
-                'telefone' => '$i4 9999-0000',
-                'cidade' => 'Marília',
-                'estado' => 'SP'
             ]);
         }
         // Usuario::factory()->count(10)->create();
