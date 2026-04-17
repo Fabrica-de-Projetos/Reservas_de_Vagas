@@ -6,10 +6,8 @@ const senha = document.getElementById("input-senha")
 const modeloVeiculo = document.getElementById("input-modelo-veiculo")
 const placaVeiculo = document.getElementById("input-placa")
 
-
 function validarEmail(email){
     const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
     if (regexEmail.test(email)){
         return true
     }
@@ -21,7 +19,6 @@ function validarEmail(email){
 
 function validarSenha(senha,confirmarSenha)
 {
-
     if (senha != confirmarSenha )
     {
         return false
@@ -30,28 +27,38 @@ function validarSenha(senha,confirmarSenha)
     {
         return true
     }
-
 }
 
 function montarJson()
 {
-
     let requisicao = {
-        nome_completo : nomeCompleto.value,
-        email : email.value,
-        senha : senha.value
+        nome_usuario: nomeCompleto.value,
+        email: email.value,
+        senha: senha.value
     }
-
-    let json = JSON.stringify(requisicao)
-    return json
+    return JSON.stringify(requisicao)
 }
 
-function consumirAPI(array)
+function consumirAPI(json)
 {
-    //a terminar
+    fetch("https://backend-oh40.onrender.com/api/spotLivre/usuarios", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: json
+    })
+    .then(response => {
+        if (!response.ok) throw new Error("Erro na requisição")
+        return response.json()
+    })
+    .then(data => {
+        console.log(data)
+    })
+    .catch(error => {
+        console.error(error)
+    })
 }
-
-
 
 botao_submit.addEventListener("click", (e) =>{
     e.preventDefault()
@@ -61,7 +68,7 @@ botao_submit.addEventListener("click", (e) =>{
     let arrayInputs = Array.from(inputs)
     let validacaoEmail = null
     let validacaoSenha = null
-    let senha = null
+    let senhaLocal = null
     let confirmarSenha = null
 
     for(let i =0; i<inputs.length; i++)
@@ -86,17 +93,17 @@ botao_submit.addEventListener("click", (e) =>{
         
         if (arrayInputs[i].id == "input-senha")
         {
-            senha = arrayInputs[i]
+            senhaLocal = arrayInputs[i]
         }
         else if (arrayInputs[i].id == "input-confirmar-senha")
         {
             confirmarSenha = arrayInputs[i]
 
-            validacaoSenha = validarSenha(senha.value, confirmarSenha.value)
+            validacaoSenha = validarSenha(senhaLocal.value, confirmarSenha.value)
 
             if (validacaoSenha === false)
             {
-                let inputBoxSenha = senha.closest(".input-box")
+                let inputBoxSenha = senhaLocal.closest(".input-box")
                 let inputBoxConfirmar = confirmarSenha.closest(".input-box")
                 inputBoxSenha.classList.add("input-box-error")
                 inputBoxConfirmar.classList.add("input-box-error")
@@ -105,21 +112,19 @@ botao_submit.addEventListener("click", (e) =>{
             }
             else
             {
-                let inputBoxSenha = senha.closest(".input-box")
+                let inputBoxSenha = senhaLocal.closest(".input-box")
                 let inputBoxConfirmar = confirmarSenha.closest(".input-box")
                 inputBoxSenha.classList.remove("input-box-error")
                 inputBoxConfirmar.classList.remove("input-box-error")
                 mensagemErroSenha.classList.remove("mensagem-erro-ativo")
             }
-
-
         }
 
-        // ou seja, se essa for a ultima iteração
         if (i+1 == inputs.length)
         {
-            let requisicao = montarJson()
-            console.log(requisicao)
+            let json = montarJson()
+            console.log(json)
+            consumirAPI(json)
         }
     }
 })
