@@ -39,9 +39,7 @@ function montarJson()
     let requisicao = {
         nome_completo : nomeCompleto.value,
         email : email.value,
-        senha : senha.value,
-        modelo_veiculo : modeloVeiculo.value,
-        placa_veiculo: placaVeiculo.value
+        senha : senha.value
     }
 
     let json = JSON.stringify(requisicao)
@@ -55,7 +53,8 @@ function consumirAPI(array)
 
 
 
-botao_submit.addEventListener("click", () =>{
+botao_submit.addEventListener("click", (e) =>{
+    e.preventDefault()
     const mensagemErroEmail = document.getElementById("mensagem-erro-email")
     const mensagemErroSenha = document.getElementById("mensagem-erro-senha")
     let inputs = form.getElementsByTagName("input")
