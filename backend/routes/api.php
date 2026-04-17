@@ -11,5 +11,4 @@ Route::resource("/spotLivre/reservas", ReservaController::class);
 Route::resource("/spotLivre/usuarios", UsuarioController::class);
 Route::resource("/spotLivre/vagas", VagaController::class);
 Route::resource("/spotLivre/veiculos", VeiculoController::class);
-
 Route::post("/spotLivre/login", [LoginController::class, 'login']);
