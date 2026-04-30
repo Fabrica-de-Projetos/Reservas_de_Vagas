@@ -89,17 +89,17 @@ class ReservaController extends Controller
             $reserva = Reserva::findOrFail($id);
 
             $request->validate([
-                'id_usuario' => 'required|integer|exists:usuarios,id',
-                'id_veiculo' => 'required|integer|exists:veiculos,id',
-                'id_vaga' => 'required|integer|exists:vagas,id',
+                'id_usuario' => 'nullable|integer|exists:usuarios,id',
+                'id_veiculo' => 'nullable|integer|exists:veiculos,id',
+                'id_vaga' => 'nullable|integer|exists:vagas,id',
                 'data_inicio' => 'nullable|date|before:data_fim',
                 'data_fim' => 'nullable|date|after:data_inicio'
             ]);
 
             $reserva->update([
-                'id_usuario' => $request->id_usuario,
-                'id_veiculo' => $request->id_veiculo,
-                'id_vaga' => $request->id_vaga,
+                'id_usuario' => $request->id_usuario ?? $reserva->id_usuario,
+                'id_veiculo' => $request->id_veiculo ?? $reserva->id_veiculo,
+                'id_vaga' => $request->id_vaga ?? $reserva->id_vaga,
                 'data_inicio' => $request->data_inicio ?? $reserva->data_inicio,
                 'data_fim' => $request->data_fim ?? $reserva->data_fim
             ]);
@@ -126,12 +126,12 @@ class ReservaController extends Controller
         try {
             Reserva::destroy($id);
 
-            return response()->json(['message' => 'Reserva excluída com sucesso.'], 204);
+            return response()->json(['message' => 'Reserva excluída com sucesso.'], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Não foi possível excluir a reserva.',
                 'errors' => $th->getMessage()
-            ]);
+            ], 204);
         }
     }
 }

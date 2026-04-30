@@ -104,9 +104,9 @@ class UsuarioController extends Controller
             ]);
 
             $usuario->update([
-                'nome' => $request->nome_usuario,
-                'email' => $request->email,
-                'senha' => $request->senha
+                'nome' => $request->nome_usuario ?? $usuario->nome,
+                'email' => $request->email ?? $usuario->email,
+                'senha' => Hash::make($request->senha) ?? $usuario->senha
             ]);
 
             return response()->json([
@@ -133,12 +133,12 @@ class UsuarioController extends Controller
         try {
             Usuario::destroy($id);
 
-            return response()->json(['message' => 'Usuário excluido com sucesso!'], 204);
+            return response()->json(['message' => 'Usuário excluído com sucesso!'], 200);
         } catch (\Throwable $th) {
             return response()->json([
-                'message' => 'Não foi possível excluir o usuário.',
+                'message' => 'Não foi possível excluír o usuário.',
                 'erros' => $th->getMessage()
-            ]);
+            ], 204);
         }
     }
 }
