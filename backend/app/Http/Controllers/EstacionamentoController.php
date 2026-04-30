@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Estacionamento;
 use Illuminate\Http\Request;
 
 class EstacionamentoController extends Controller
@@ -11,7 +12,13 @@ class EstacionamentoController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            $estacionamentos = Estacionamento::all();
+
+            return response()->json([$estacionamentos], 200);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 
     /**
