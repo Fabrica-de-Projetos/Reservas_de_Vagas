@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 // namespace que me permite usar método de criptografia de senha em hash
 use Illuminate\Support\Facades\Hash;
@@ -48,9 +47,14 @@ class UsuarioController extends Controller
                 'senha' => Hash::make($request->senha),
             ]);
 
+            /*Essa linha terá a função de criar um acess token para o usuario*/
+            $token = $usuario->createToken('auth_token')->plainTextToken;
+
+            /*A api não vai retornar mais os dados do usuario, ela vai retornar só o token, que vai deixar a comunicação da API com o front mais segura*/
             return response()->json([
                 'message' => 'Usuário criado com sucesso',
-                'data' => $usuario
+                'token' => $token,
+                'type' => 'bearer'
             ], 201);
         } catch (ValidationException $e) { // se der um erro do tipo "ValidationException" cai nesse catch
             return response()->json([
