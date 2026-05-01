@@ -17,7 +17,7 @@ class UsuarioController extends Controller
     {
         try {
             $usuarios = Usuario::all();
-            return response()->json($usuarios, 200);
+            return response()->json(['usuarios' => $usuarios], 200);
         } catch (\Throwable $e) {
             return response()->json(
                 [

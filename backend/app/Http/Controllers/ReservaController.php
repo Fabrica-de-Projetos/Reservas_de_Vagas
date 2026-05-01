@@ -16,7 +16,7 @@ class ReservaController extends Controller
         try {
             $reservas = Reserva::all();
 
-            return response()->json([$reservas], 200);
+            return response()->json(['reservas' => $reservas], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => "Não foi possível recuperar as reservas.",
@@ -72,7 +72,7 @@ class ReservaController extends Controller
         try {
             $reserva = Reserva::findOrFail($id);
 
-            return response()->json([$reserva], 200);
+            return response()->json(['reserva' => $reserva], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Não foi possível recuperar a reserva.',
