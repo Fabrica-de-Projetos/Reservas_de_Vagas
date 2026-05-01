@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 // namespace que me permite usar método de criptografia de senha em hash
 use Illuminate\Support\Facades\Hash;
 use App\Models\Usuario;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class UsuarioController extends Controller
@@ -23,17 +24,10 @@ class UsuarioController extends Controller
                 [
                     'message' => 'Erro ao recuperar usuários',
                     'error' => $e->getMessage(),
-                ],500
+                ],
+                500
             );
         }
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -76,23 +70,59 @@ class UsuarioController extends Controller
      */
     public function show(string $id)
     {
-        //
-    }
+        try {
+            $usuario = Usuario::findOrFail($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+            return response()->json([
+                $usuario
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Não foi possível recuperar o usuário.',
+                'errors' => $th->getMessage()
+            ], 404);
+        }
     }
 
     /**
      * Update the specified resource in storage.
+     * ! lembrar os meninos de aplicar o método PATCH nesse aqui, permitindo alteração parcial dos valores passados
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $usuario = Usuario::findOrFail($id);
+
+            $request->validate([
+                'nome_usuario' => 'sometimes|string|max:100',
+                'email' => [
+                    'sometimes',
+                    'email',
+                    Rule::unique('usuarios', 'email')->ignore($usuario->$id)
+                ],
+                'senha' => 'sometimes|min:6',
+            ]);
+
+            $usuario->update([
+                'nome' => $request->nome_usuario ?? $usuario->nome,
+                'email' => $request->email ?? $usuario->email,
+                'senha' => Hash::make($request->senha) ?? $usuario->senha
+            ]);
+
+            return response()->json([
+                'message' => 'Usuário atualizado com sucesso!'
+            ], 200);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Erro de validação.',
+                'errors' => $e->getMessage()
+            ], 422);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Erro interno no servidor.',
+                'errors' => $th->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -100,6 +130,15 @@ class UsuarioController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            Usuario::destroy($id);
+
+            return response()->json(['message' => 'Usuário excluído com sucesso!'], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Não foi possível excluír o usuário.',
+                'erros' => $th->getMessage()
+            ], 204);
+        }
     }
 }
