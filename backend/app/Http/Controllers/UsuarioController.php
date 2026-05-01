@@ -54,9 +54,14 @@ class UsuarioController extends Controller
                 'senha' => Hash::make($request->senha),
             ]);
 
+            /*Essa linha terá a função de criar um acess token para o usuario*/
+            $token = $usuario->createToken('auth_token')->plainTextToken;
+
             return response()->json([
                 'message' => 'Usuário criado com sucesso',
-                'data' => $usuario
+                'data' => $usuario,
+                'token' => $token,
+                'type' => 'bearer'
             ], 201);
         } catch (ValidationException $e) { // se der um erro do tipo "ValidationException" cai nesse catch
             return response()->json([
