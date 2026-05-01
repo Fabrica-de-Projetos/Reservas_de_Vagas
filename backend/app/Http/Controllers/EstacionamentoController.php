@@ -27,7 +27,12 @@ class EstacionamentoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $estacionamento = Estacionamento::create($request->all());
+
+        return response()->json([
+            'msg' => 'Estacionamento criado com sucesso',
+            'data' => $estacionamento
+        ], 201);
     }
 
     /**
@@ -51,7 +56,14 @@ class EstacionamentoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $estacionamento = Estacionamento::findOrFail($id);
+
+        $estacionamento->update($request->all());
+
+        return response()->json([
+            'msg' => 'Estacionamento atualizado com sucesso',
+            'data' => $estacionamento
+        ]);
     }
 
     /**
@@ -59,6 +71,7 @@ class EstacionamentoController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+             Estacionamento::destroy($id);
+             return response()->json(['msg' => 'Registro removido']);
     }
 }
