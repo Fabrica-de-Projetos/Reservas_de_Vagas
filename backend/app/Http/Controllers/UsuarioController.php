@@ -106,7 +106,7 @@ class UsuarioController extends Controller
             $usuario->update([
                 'nome' => $request->nome_usuario ?? $usuario->nome,
                 'email' => $request->email ?? $usuario->email,
-                'senha' => Hash::make($request->senha) ?? $usuario->senha
+                'senha' => $request->senha ? Hash::make($request->senha) : $usuario->senha
             ]);
 
             return response()->json([
