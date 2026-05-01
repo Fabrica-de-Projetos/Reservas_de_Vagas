@@ -39,7 +39,7 @@ class ReservaController extends Controller
                 'data_fim' => 'required|date'
             ]);
 
-            Reserva::create([
+            $reserva = Reserva::create([
                 'id_usuario' => $request->id_usuario,
                 'id_veiculo' => $request->id_veiculo,
                 'id_vaga' => $request->id_vaga,
@@ -48,7 +48,8 @@ class ReservaController extends Controller
             ]);
 
             return response()->json([
-                'message' => 'Reserva realizada com sucesso!'
+                'message' => 'Reserva realizada com sucesso!',
+                'reserva' => $reserva
             ], 201);
         } catch (ValidationException $e) {
             return response()->json([
@@ -104,7 +105,10 @@ class ReservaController extends Controller
                 'data_fim' => $request->data_fim ?? $reserva->data_fim
             ]);
 
-            return response()->json(['message' => 'Reserva atualizada com sucesso'], 200);
+            return response()->json([
+                'message' => 'Reserva atualizada com sucesso.',
+                'reserva' => $reserva
+                ], 200);
         } catch (ValidationException $e) {
             return response()->json([
                 'message' => 'Erro de validação.',

@@ -78,7 +78,7 @@ class UsuarioController extends Controller
             $usuario = Usuario::findOrFail($id);
 
             return response()->json([
-                $usuario
+                'usuario' => $usuario
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([
@@ -114,7 +114,8 @@ class UsuarioController extends Controller
             ]);
 
             return response()->json([
-                'message' => 'Usuário atualizado com sucesso!'
+                'message' => 'Usuário atualizado com sucesso!',
+                'usuario' => $usuario
             ], 200);
         } catch (ValidationException $e) {
             return response()->json([

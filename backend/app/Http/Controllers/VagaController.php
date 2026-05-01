@@ -17,7 +17,7 @@ class VagaController extends Controller
             $vagas = Vaga::all();
 
             return response()->json([
-                $vagas
+                'vagas' => $vagas
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([
@@ -39,7 +39,7 @@ class VagaController extends Controller
                 'tipo' => 'required'
             ]);
 
-            Vaga::create([
+            $vaga = Vaga::create([
                 'id_estacionamento' => $request->id_estacionamento,
                 'numero' => $request->numero,
                 'tipo' => $request->tipo
@@ -47,6 +47,7 @@ class VagaController extends Controller
 
             return response()->json([
                 'message' => 'Vaga criada com sucesso!',
+                'vaga' => $vaga
             ], 201);
         } catch (ValidationException $e) {
             return response()->json([
@@ -69,7 +70,7 @@ class VagaController extends Controller
         try {
             $vaga = Vaga::findOrFail($id);
 
-            return response()->json([$vaga], 200);
+            return response()->json(['vaga' => $vaga], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Não foi possível recuperar a vaga.',
@@ -94,11 +95,17 @@ class VagaController extends Controller
 
             $vaga->update([
                 'id_estacionamento' => $request->id_estacionamento ?? $vaga->id_estacionamento,
-                'numero' => $request->vaga ?? $vaga->numero,
+                'numero' => $request->numero ?? $vaga->numero,
                 'tipo' => $request->tipo ?? $vaga->tipo
             ]);
 
-            return response()->json(['message' => 'Vaga atualizada com sucesso!'], 200);
+            return response()->json(
+                [
+                    'message' => 'Vaga atualizada com sucesso!',
+                    'vaga' => $vaga
+                ],
+                200
+            );
         } catch (ValidationException $e) {
             return response()->json([
                 'message' => 'Erro de validação',

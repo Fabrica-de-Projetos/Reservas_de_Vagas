@@ -62,7 +62,7 @@ class VeiculoController extends Controller
     {
         try {
             $veiculo = Veiculo::FindOrFail($id);
-            return response()->json([$veiculo], 200);
+            return response()->json(['veiculo' => $veiculo], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Não foi possível recuperar o veículo.',
