@@ -27,12 +27,23 @@ class EstacionamentoController extends Controller
      */
     public function store(Request $request)
     {
-        $estacionamento = Estacionamento::create($request->all());
+           $validated = $request->validate([
+        'nome'        => 'required|string|max:255',
+        'rua'         => 'required|string|max:255',
+        'numero'      => 'required|string|max:10',
+        'bairro'      => 'required|string|max:255',
+        'cep'         => 'required|string|size:8',
+        'cidade'      => 'required|string|max:255',
+        'estado'      => 'required|string|size:2',
+        'total_vagas' => 'required|integer|min:1',
+    ]);
 
-        return response()->json([
-            'msg' => 'Estacionamento criado com sucesso',
-            'data' => $estacionamento
-        ], 201);
+    $estacionamento = Estacionamento::create($validated);
+
+    return response()->json([
+        'message' => 'Estacionamento criado com sucesso!',
+        'data' => $estacionamento
+    ], 201);
     }
 
     /**
