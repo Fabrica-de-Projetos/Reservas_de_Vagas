@@ -13,19 +13,11 @@ class VeiculoController extends Controller
      */
     public function index(Request $request)
     {
-        $veiculos = Veiculo::where('id_usuario',$request->user()->id)->get();
+        $veiculos = Veiculo::where('id_usuario', $request->user()->id)->get();
 
         return response()->json([
-            'veiculos'=>$veiculos
+            'veiculos' => $veiculos
         ], 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -35,27 +27,25 @@ class VeiculoController extends Controller
     {
         $request->validate([
             'modelo' => 'required|string',
-            'placa'=> 'required|string',
-            'marca'=> 'required|string',
-            'cor'=> 'required|string',
-            'ano'=> 'required|digits:4'
+            'placa' => 'required|string',
+            'marca' => 'required|string',
+            'cor' => 'required|string',
+            'ano' => 'required|digits:4'
         ]);
 
-        try{
+        try {
             $veiculo = Veiculo::create([
-                'id_usuario'=> $request->user()->id,
+                'id_usuario' => $request->user()->id,
                 'modelo' => $request->modelo,
-                'placa'=> $request->placa,
-                'marca'=> $request->marca,
-                'cor'=> $request->cor,
-                'ano'=> $request->ano
+                'placa' => $request->placa,
+                'marca' => $request->marca,
+                'cor' => $request->cor,
+                'ano' => $request->ano
             ]);
-        }
-        catch (Exception $e)
-        {
+        } catch (Exception $e) {
             return response()->json([
-                'message'=>'erro ao salvar no banco de dados',
-                'error'=> $e
+                'message' => 'erro ao salvar no banco de dados',
+                'error' => $e
             ], 500);
         }
 
@@ -70,15 +60,15 @@ class VeiculoController extends Controller
      */
     public function show(string $id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        try {
+            $veiculo = Veiculo::FindOrFail($id);
+            return response()->json([$veiculo], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Não foi possível recuperar o veículo.',
+                'errors' => $th->getMessage()
+            ], 404);
+        }
     }
 
     /**
@@ -86,29 +76,36 @@ class VeiculoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $veiculo = Veiculo::where('id_usuario',$request->user()->id)
-        ->where('id',$id)
-        ->first();
+        $request->validate([
+            'modelo' => 'sometimes|string',
+            'placa' => 'sometimes|string',
+            'marca' => 'sometimes|string',
+            'cor' => 'sometimes|string',
+            'ano' => 'sometimes|digits:4'
+        ]);
 
-        if ($veiculo === null)
-            {
-                return response([
-                    'message'=>'nenhum veiculo retornado',
-                    'veiculo'=> $veiculo
-                ], 404);
-            }
+        $veiculo = Veiculo::where('id_usuario', $request->user()->id)
+            ->where('id', $id)
+            ->first();
 
-        $veiculo -> update([
-            'modelo' => $request->modelo,
-            'placa'=> $request->placa,
-            'marca'=> $request->marca,
-            'cor'=> $request->cor,
-            'ano'=> $request->ano
+        if ($veiculo === null) {
+            return response([
+                'message' => 'nenhum veiculo retornado',
+                'veiculo' => $veiculo
+            ], 404);
+        }
+
+        $veiculo->update([
+            'modelo' => $request->modelo ?? $veiculo->modelo,
+            'placa' => $request->placa ?? $veiculo->placa,
+            'marca' => $request->marca ?? $veiculo->marca,
+            'cor' => $request->cor ?? $veiculo->cor,
+            'ano' => $request->ano ?? $veiculo->ano
         ]);
 
         return response()->json([
-            'message'=>'Informacoes do veiculo foram atualizadas',
-            'veiculo'=>$veiculo
+            'message' => 'Informacoes do veiculo foram atualizadas',
+            'veiculo' => $veiculo
         ], 200);
     }
 
@@ -117,22 +114,21 @@ class VeiculoController extends Controller
      */
     public function destroy(Request $request, string $id)
     {
-       $veiculo = Veiculo::where('id_usuario',$request->user()->id)
-        ->where('id',$id)
-        ->first();
+        $veiculo = Veiculo::where('id_usuario', $request->user()->id)
+            ->where('id', $id)
+            ->first();
 
-        if ($veiculo === null)
-            {
-                return response([
-                    'message'=>'nenhum veiculo retornado',
-                    'veiculo'=> $veiculo
-                ], 404);
-            }
+        if ($veiculo === null) {
+            return response([
+                'message' => 'nenhum veiculo retornado',
+                'veiculo' => $veiculo
+            ], 404);
+        }
 
-        $veiculo -> delete();
+        $veiculo->delete();
 
         return response()->json([
-            'message'=>'Veiculo foi removido com sucesso'
+            'message' => 'Veiculo foi removido com sucesso'
         ], 200);
     }
 }
