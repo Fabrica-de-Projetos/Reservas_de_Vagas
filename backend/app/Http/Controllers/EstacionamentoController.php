@@ -69,7 +69,28 @@ class EstacionamentoController extends Controller
     {
         $estacionamento = Estacionamento::findOrFail($id);
 
-        $estacionamento->update($request->all());
+        $data = $request->validate([
+        'nome'        => 'sometimes|required|string|max:255',
+        'rua'         => 'sometimes|required|string|max:255',
+        'numero'      => 'sometimes|required|string|max:20',
+        'bairro'      => 'sometimes|required|string|max:255',
+        'cep'         => 'sometimes|required|string|max:10',
+        'cidade'      => 'sometimes|required|string|max:255',
+        'estado'      => 'sometimes|required|string|max:2',
+        'total_vagas' => 'sometimes|required|integer|min:1',
+    ]);
+
+   
+    if (empty($data)) {
+        return response()->json([
+            'erro' => 'Envie ao menos um campo para atualizar.'
+        ], 400);
+    }
+
+    $estacionamento->update($data);
+
+
+       
 
         return response()->json([
             'msg' => 'Estacionamento atualizado com sucesso',
@@ -82,7 +103,20 @@ class EstacionamentoController extends Controller
      */
     public function destroy(string $id)
     {
-             Estacionamento::destroy($id);
-             return response()->json(['msg' => 'Registro removido']);
+        try {
+            $estacionamento = Estacionamento::findOrFail($id);
+            $estacionamento->delete();
+
+        return response()->json([
+            'msg' => 'Registro removido com sucesso'
+        ], 200);
+
+    }
+    
+    catch (ModelNotFoundException $e) {
+        return response()->json([
+            'erro' => 'Estacionamento não encontrado para o ID informado.'
+        ], 404);
+    }
     }
 }
