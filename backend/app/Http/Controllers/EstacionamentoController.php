@@ -70,30 +70,33 @@ class EstacionamentoController extends Controller
         $estacionamento = Estacionamento::findOrFail($id);
 
         $data = $request->validate([
-        'nome'        => 'sometimes|required|string|max:255',
-        'rua'         => 'sometimes|required|string|max:255',
-        'numero'      => 'sometimes|required|string|max:20',
-        'bairro'      => 'sometimes|required|string|max:255',
-        'cep'         => 'sometimes|required|string|max:10',
-        'cidade'      => 'sometimes|required|string|max:255',
-        'estado'      => 'sometimes|required|string|max:2',
-        'total_vagas' => 'sometimes|required|integer|min:1',
+        'nome'        => 'sometimes|string|max:255',
+        'rua'         => 'sometimes|string|max:255',
+        'numero'      => 'sometimes|string|max:20',
+        'bairro'      => 'sometimes|string|max:255',
+        'cep'         => 'sometimes|string|max:10',
+        'cidade'      => 'sometimes|string|max:255',
+        'estado'      => 'sometimes|string|max:2',
+        'total_vagas' => 'sometimes|integer|min:1',
+    ]);
+
+    $estacionamento->update([
+        'nome'        => $request->nome        ?? $estacionamento->nome,
+        'rua'         => $request->rua         ?? $estacionamento->rua,
+        'numero'      => $request->numero      ?? $estacionamento->numero,
+        'bairro'      => $request->bairro      ?? $estacionamento->bairro,
+        'cep'         => $request->cep         ?? $estacionamento->cep,
+        'cidade'      => $request->cidade      ?? $estacionamento->cidade,
+        'estado'      => $request->estado      ?? $estacionamento->estado,
+        'total_vagas' => $request->total_vagas ?? $estacionamento->total_vagas,
     ]);
 
    
-    if (empty($data)) {
-        return response()->json([
-            'erro' => 'Envie ao menos um campo para atualizar.'
-        ], 400);
-    }
-
-    $estacionamento->update($data);
 
 
-       
 
         return response()->json([
-            'msg' => 'Estacionamento atualizado com sucesso',
+            'message' => 'Estacionamento atualizado com sucesso',
             'data' => $estacionamento
         ]);
     }
@@ -108,7 +111,7 @@ class EstacionamentoController extends Controller
             $estacionamento->delete();
 
         return response()->json([
-            'msg' => 'Registro removido com sucesso'
+            'message' => 'Registro removido com sucesso'
         ], 200);
 
     }
