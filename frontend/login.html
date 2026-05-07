@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="img/dsin-logo.png">
-    <link rel="stylesheet" href="css/cadastro.css">
-    <title>Tela Cadastro </title>
+    <link rel="stylesheet" href="css/login.css">
+    <title>Tela Login</title>
 </head>
 <body>
     <main>
@@ -18,7 +18,7 @@
                 <h1 class="titulo-apresentacao">Seja bem vindo!</h1>
                 <h3 class="mensagem-apresentacao">Chegou, registrou, estacionou</h3>
             </section>
-            <section class="sessao-cadastro">
+            <section class="sessao-login">
                 <div class="background-card">
                     <div class="pc_view">
                         <section class="sessao-apresentacao">
@@ -31,21 +31,12 @@
                         </section>
                         <img src="img/banner.svg" alt="Banner" class="banner_car">
                         <div style="margin-bottom: 30px;" class="centralizar pc_view">
-                            <span style="color: white; margin-right: 5px;">Já possui uma conta?</span>
-                            <a style="color: #FFCB00; text-decoration: none;" href="login.html">fazer login</a>
+                            <span style="color: white; margin-right: 5px;">Não possui uma conta?</span>
+                            <a style="color: #FFCB00; text-decoration: none;" href="cadastro.html">Cadastre-se aqui</a>
                         </div>
                     </div>
                     <div class="input-container">
-                        <form id="formulario-cadastro">
-                            <!--Nome completo-->
-                            <label class="input-box">
-                                <span class="input-icone">
-                                    <img src="img/icones/usuario.png" alt="Icone Usuário">
-                                </span>
-                                <input id="input-nome-completo" placeholder=" " type="text" required>
-                                <span class="input-descricao">Nome completo</span> <span style="color: #ff0000;">*</span>
-                            </label>
-
+                        <form id="formulario-login">
                             <!--Email-->
                             
                             <label class="input-box">
@@ -55,7 +46,6 @@
                                 <input id="input-email" placeholder=" " type="text" required>
                                 <span class="input-descricao">Email</span> <span style="color: #ff0000;">*</span>
                             </label>
-                            <span id="mensagem-erro-email" class="mensagem-erro">Digite um email válido</span>
 
                             <!--Senha-->
                             <label class="input-box">
@@ -65,27 +55,21 @@
                                 <input id="input-senha" placeholder=" " type="text" required>
                                 <span class="input-descricao">Senha</span> <span style="color: #ff0000;">*</span>
                             </label>
-                            <label class="input-box">
-                                <span class="input-icone">
-                                    <img src="img/icones/senha.png" alt="Icone Senha">
-                                </span>
-                                <input id="input-confirmar-senha" placeholder=" " type="text" required>
-                                <span class="input-descricao">Confirme a senha</span> <span style="color: #ff0000;">*</span>
-                            </label>
-                            <span id="mensagem-erro-senha" class="mensagem-erro">As senhas devem ser correspondentes</span>
+                            <span id="mensagem-erro" class="mensagem-erro">E-mail ou senha não foram preenchidos corretamente</span>
+
                             <div class="centralizar">
-                                <button id="botao-submit" type="button" style="margin-top: 30px;" class="botao-modelo-principal">Cadastrar</button>
+                                <button id="botao-submit" type="button" style="margin-top: 30px;" class="botao-modelo-principal">Entrar</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </section>
             <div style="margin-bottom: 30px;" class="centralizar mb_view">
-                <span style="color: white; margin-right: 5px;">Já possui uma conta?</span>
-                <a style="color: #FFCB00; text-decoration: none;" href="index.html">fazer login</a>
+                <span style="color: white; margin-right: 5px;">Não possui uma conta?</span>
+                <a style="color: #FFCB00; text-decoration: none;" href="cadastro.html">Cadastre-se aqui</a>
             </div>
         </div>
     </main>
 </body>
-<script src="js/cadastro.js"></script>
+<script src="js/login.js"></script>
 </html>

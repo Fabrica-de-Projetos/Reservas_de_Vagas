@@ -41,7 +41,7 @@ function montarJson()
 
 function consumirAPI(json)
 {
-    fetch("https://backend-oh40.onrender.com/api/spotLivre/usuarios", {
+    fetch("https://backend-oh40.onrender.com/api/spotLivre/usuarios", {  //"https://backend-oh40.onrender.com/api/spotLivre/usuarios"
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -53,7 +53,7 @@ function consumirAPI(json)
         return response.json()
     })
     .then(data => {
-        console.log(data)
+        window.location.href = "http://127.0.0.1:5500/frontend/login.html"
     })
     .catch(error => {
         console.error(error)
@@ -124,7 +124,8 @@ botao_submit.addEventListener("click", (e) =>{
         {
             let json = montarJson()
             console.log(json)
-            consumirAPI(json)
+            let api = consumirAPI(json)
+
         }
     }
 })
