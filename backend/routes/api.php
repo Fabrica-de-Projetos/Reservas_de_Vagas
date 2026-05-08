@@ -10,6 +10,8 @@ Route::resource("/spotLivre/estacionamentos", EstacionamentoController::class);
 Route::resource("/spotLivre/reservas", ReservaController::class);
 Route::resource("/spotLivre/usuarios", UsuarioController::class);
 Route::resource("/spotLivre/vagas", VagaController::class);
+
+/*Rota para verificacao do usuario*/
 Route::post("/spotLivre/login", [LoginController::class, 'login']);
 
 /*Rota para veiculos*/
