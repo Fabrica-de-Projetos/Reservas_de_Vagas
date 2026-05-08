@@ -14,4 +14,14 @@ class Veiculo extends Model
         'cor',
         'ano'
     ];
+
+    public function usuario()
+    {
+        return $this->belongsTo(Veiculo::class);
+    }
+
+    public function reservas()
+    {
+        return $this->hasMany(Reserva::class, 'id_veiculo');
+    }
 }

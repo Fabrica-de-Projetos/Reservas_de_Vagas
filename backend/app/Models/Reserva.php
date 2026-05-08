@@ -13,4 +13,19 @@ class Reserva extends Model
         'data_inicio',
         'data_fim'
     ];
+    
+    public function usuario()
+    {
+        return $this->belongsTo(Usuario::class);
+    }
+
+    public function veiculo()
+    {
+        return $this->belongsTo(Veiculo::class);
+    }
+
+    public function vaga()
+    {
+        return $this->belongsTo(Vaga::class);
+    }
 }

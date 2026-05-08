@@ -7,8 +7,8 @@ use Laravel\Sanctum\HasApiTokens;
 
 class Usuario extends Model
 {
-     use HasApiTokens;
-    
+    use HasApiTokens;
+
     protected $fillable = [
         'nome',
         'email',
@@ -17,4 +17,14 @@ class Usuario extends Model
         'cidade',
         'estado'
     ];
+
+    public function veiculos()
+    {
+        return $this->hasMany(Veiculo::class, 'veiculo_id');
+    }
+
+    public function reservas()
+    {
+        return $this->hasMany(Reserva::class, 'id_usuario');
+    }
 }

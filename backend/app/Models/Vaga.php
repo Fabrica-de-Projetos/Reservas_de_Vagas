@@ -11,4 +11,14 @@ class Vaga extends Model
         'numero',
         'tipo'
     ];
+
+    public function estacionamento()
+    {
+        return $this->belongsTo(Estacionamento::class);
+    }
+
+    public function reservas()
+    {           
+        return $this->hasMany(Reserva::class, 'id_vaga');
+    }
 }

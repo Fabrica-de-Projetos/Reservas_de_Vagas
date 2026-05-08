@@ -16,4 +16,9 @@ class Estacionamento extends Model
         'estado',
         'total_vagas'
     ];
+
+    public function vagas()
+    {
+        return $this->hasMany(Vaga::class, 'estacionamento_id');
+    }
 }
