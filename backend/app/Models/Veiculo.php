@@ -17,7 +17,7 @@ class Veiculo extends Model
 
     public function usuario()
     {
-        return $this->belongsTo(Veiculo::class);
+        return $this->belongsTo(Veiculo::class, 'id_usuario');
     }
 
     public function reservas()
