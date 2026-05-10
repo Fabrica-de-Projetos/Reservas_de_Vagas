@@ -47,7 +47,8 @@ class EstacionamentoController extends Controller
                 'numero' => ['required', 'string', 'max:10'],
                 'bairro' => ['required', 'string', 'max:100'],
                 'cep' => ['required', 'string', 'max:8'],
-                'estado' => ['required', 'max;2'],
+                'cidade' => ['required', 'string', 'max:50'],
+                'estado' => ['sometimes', 'string', 'max:2'],
                 'total_vagas' => ['required', 'integer']
             ]);
 
@@ -57,6 +58,7 @@ class EstacionamentoController extends Controller
                 'numero' => $request->numero,
                 'bairro' => $request->bairro,
                 'cep' => $request->cep,
+                'cidade' => $request->cidade,
                 'estado' => $request->estado,
                 'total_vagas' => $request->total_vagas
             ]);
@@ -118,7 +120,8 @@ class EstacionamentoController extends Controller
                 'numero' => ['sometimes', 'string', 'max:10'],
                 'bairro' => ['sometimes', 'string', 'max:100'],
                 'cep' => ['sometimes', 'string', 'max:8'],
-                'estado' => ['sometimes', 'max;2'],
+                'cidade' => ['sometimes', 'string', 'max:50'],
+                'estado' => ['sometimes', 'string', 'max:2'],
                 'total_vagas' => ['sometimes', 'integer']
             ]);
 
@@ -128,6 +131,7 @@ class EstacionamentoController extends Controller
                 'numero' => $request->numero ?? $estacionamento->numero,
                 'bairro' => $request->bairro ?? $estacionamento->bairro,
                 'cep' => $request->cep ?? $estacionamento->cep,
+                'cidade' => $request->cidade ?? $estacionamento->cidade,
                 'estado' => $request->estado ?? $estacionamento->estado,
                 'total_vagas' => $request->total_vagas ?? $estacionamento->total_vagas
             ]);
