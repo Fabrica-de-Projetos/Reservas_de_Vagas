@@ -41,7 +41,7 @@ class UsuarioController extends Controller
                 'senha' => 'required|min:6',
             ]);
 
-            $usuario = Usuario::create([
+            Usuario::create([
                 'nome' => $request->nome_usuario,
                 'email' => $request->email,
                 'senha' => Hash::make($request->senha),

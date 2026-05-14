@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Vaga;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Validation\Rule;
 
 class VagaController extends Controller
 {
@@ -35,7 +36,13 @@ class VagaController extends Controller
         try {
             $request->validate([
                 'id_estacionamento' => 'required|integer',
-                'numero' => 'required|integer',
+                'numero' => [
+                    'required',
+                    'integer',
+                    Rule::unique('vagas')->where(function ($query) use ($request) {
+                        return $query->where('id_estacionamento', $request->id_estacionamento);
+                    }),
+                ],
                 'tipo' => 'required'
             ]);
 
