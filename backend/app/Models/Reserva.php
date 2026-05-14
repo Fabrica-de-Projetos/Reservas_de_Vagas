@@ -16,16 +16,16 @@ class Reserva extends Model
     
     public function usuario()
     {
-        return $this->belongsTo(Usuario::class, 'id_usuario');
+        return $this->belongsTo(Usuario::class);
     }
 
     public function veiculo()
     {
-        return $this->belongsTo(Veiculo::class, 'id_veiculo');
+        return $this->belongsTo(Veiculo::class);
     }
 
     public function vaga()
     {
-        return $this->belongsTo(Vaga::class, 'id_vaga');
+        return $this->belongsTo(Vaga::class);
     }
 }

@@ -14,7 +14,7 @@ class Vaga extends Model
 
     public function estacionamento()
     {
-        return $this->belongsTo(Estacionamento::class, 'id_estacionamento');
+        return $this->belongsTo(Estacionamento::class);
     }
 
     public function reservas()
