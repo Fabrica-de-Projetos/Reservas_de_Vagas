@@ -17,6 +17,8 @@ class Estacionamento extends Model
         'total_vagas'
     ];
 
+    protected $with = ['vagas'];
+
     public function vagas()
     {
         return $this->hasMany(Vaga::class, 'estacionamento_id');
