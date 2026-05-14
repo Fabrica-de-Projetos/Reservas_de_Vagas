@@ -16,10 +16,11 @@ class VeiculoSeeder extends Seeder
         for ($i = 0; $i < 5; $i++) {
             Veiculo::create([
                 'id_usuario' => 1,
-                'modelo' > "sedã",
+                'modelo' => 'sedã',
                 'placa' => "AAA$i",
+                'marca' => 'Toyota',
                 'cor' => 'amarelo',
-                'ano' => 2000
+                'ano' => 2000 + $i
             ]);
         }
     }

@@ -19,5 +19,6 @@ class DatabaseSeeder extends Seeder
         $this->call(EstacionamentoSeeder::class);
         $this->call(VeiculoSeeder::class);
         $this->call(VagaSeeder::class);
+        $this->call(ReservaSeeder::class);
     }
 }
