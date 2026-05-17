@@ -6,24 +6,86 @@ import InputDefault from '@/components/InputDefault.vue'
 import { ref } from 'vue'
 
 //Variaves que vão mudar de valor durante a execução
+
 const nomeCompleto = ref('')
 const email = ref('')
 const senha = ref('')
 const confirmarSenha = ref('')
 
-const erroEmail = ref(false)
-const erroSenha = ref(false)
+const validacaoNome = ref(true)
+const validacaoEmail = ref(true)
+const validacaoSenha = ref(true)
+const validacaoConfirmSenha = ref(true)
+const validacaoMensagem = ref('')
 
-function validarEmail(valor: string) {
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  return regex.test(valor)
+function validarNome(valor : string) : boolean {
+  if (valor.length == 0) {
+    validacaoNome.value = false
+    validacaoMensagem.value = 'O nome deve ser preenchido'
+    return false
+  }
+  validacaoNome.value = true
+  return true
 }
 
-function validarSenha(s: string, c: string) {
-  return s === c
+function validarEmail(valor: string): boolean {
+
+  if (valor.length === 0) {
+    validacaoEmail.value = false
+    validacaoMensagem.value = 'O email deve ser preenchido'
+    return false
+  }
+
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+  if (!regex.test(valor)) {
+    validacaoEmail.value = false
+    validacaoMensagem.value = 'Email inválido'
+    return false
+  }
+
+  validacaoEmail.value = true
+  return true
+}
+
+function validarSenha(valor: string): boolean {
+
+  if (valor.length === 0) {
+    validacaoSenha.value = false
+    validacaoMensagem.value = 'A senha deve ser informada'
+    return false
+  }
+
+  validacaoSenha.value = true
+  return true
+}
+
+function validarConfirmarSenha(
+  senhaValor: string,
+  confirmarSenhaValor: string
+): boolean {
+
+  if (confirmarSenhaValor.length === 0) {
+    validacaoConfirmSenha.value = false
+    validacaoMensagem.value =
+      'A confirmação de senha deve ser preenchida'
+
+    return false
+  }
+
+  if (senhaValor !== confirmarSenhaValor) {
+    validacaoConfirmSenha.value = false
+    validacaoMensagem.value = 'As senhas não conferem'
+
+    return false
+  }
+
+  validacaoConfirmSenha.value = true
+  return true
 }
 
 async function consumirAPI() {
+
   const json = JSON.stringify({
     nome_usuario: nomeCompleto.value,
     email: email.value,
@@ -31,35 +93,60 @@ async function consumirAPI() {
   })
 
   try {
+
     const response = await fetch(
       'https://backend-oh40.onrender.com/api/spotLivre/usuarios',
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: json,
       }
     )
-    if (!response.ok) throw new Error('Erro na requisição')
+
+    if (!response.ok) {
+      throw new Error('Erro na requisição')
+    }
+
     const data = await response.json()
+
     console.log(data)
+
   } catch (error) {
+
     console.error(error)
+    validacaoMensagem.value = 'Erro ao cadastrar usuário'
+
   }
 }
 
-function handleSubmit() {
+function requisicaoCadastro() {
 
-  erroEmail.value = false
-  erroSenha.value = false
+  validacaoNome.value = true
+  validacaoEmail.value = true
+  validacaoSenha.value = true
+  validacaoConfirmSenha.value = true
+  validacaoMensagem.value = ''
 
-  // Valida email
-  if (!validarEmail(email.value)) {
-    erroEmail.value = true
+  if (!validarNome(nomeCompleto.value)) {
     return
   }
 
-  if (!validarSenha(senha.value, confirmarSenha.value)) {
-    erroSenha.value = true
+  if (!validarEmail(email.value)) {
+    return
+  }
+
+  if (!validarSenha(senha.value)) {
+    return
+  }
+
+  if (
+    !validarConfirmarSenha(
+      senha.value,
+      confirmarSenha.value
+    )
+  ) {
     return
   }
 
@@ -109,63 +196,49 @@ function handleSubmit() {
           </div>
 
           <div class="input-container">
-
-            <label class="input-box">
-              <span class="input-icone">
-                <img src="/img/icones/usuario.png" alt="Icone Usuário" />
-              </span>
-
-              <input v-model="nomeCompleto" placeholder=" " type="text" required />
-              <span class="input-descricao">Nome completo</span>
-              <span style="color: #ff0000">*</span>
-            </label>
-
-            <label class="input-box" :class="{ 'input-box-error': erroEmail }">
-              <span class="input-icone">
-                <img src="/img/icones/email.png" alt="Icone Email" />
-              </span>
-              <input v-model="email" placeholder=" " type="text" required />
-              <span class="input-descricao">Email</span>
-              <span style="color: #ff0000">*</span>
-            </label>
-
-            <span v-show="erroEmail" class="mensagem-erro mensagem-erro-ativo">
-              Digite um email válido
-            </span>
-
-
-            <label class="input-box" :class="{ 'input-box-error': erroSenha }">
-              <span class="input-icone">
-                <img src="/img/icones/senha.png" alt="Icone Senha" />
-              </span>
-              <input v-model="senha" placeholder=" " type="password" required />
-              <span class="input-descricao">Senha</span>
-              <span style="color: #ff0000">*</span>
-            </label>
-
-            <label class="input-box" :class="{ 'input-box-error': erroSenha }">
-              <span class="input-icone">
-                <img src="/img/icones/senha.png" alt="Icone Senha" />
-              </span>
-              <input v-model="confirmarSenha" placeholder=" " type="password" required />
-              <span class="input-descricao">Confirme a senha</span>
-              <span style="color: #ff0000">*</span>
-            </label>
-            <span v-show="erroSenha" class="mensagem-erro mensagem-erro-ativo">
-              As senhas devem ser correspondentes
-            </span>
             <!--Input de teste utilizando o componentes-->
             <InputDefault
-            title="Teste"
+            v-model="nomeCompleto"
+            title="Nome Completo"
+            type="text"
+            input-icon="/img/icones/usuario.png"
+            :required ="true"
+            :validated="validacaoNome"
+            :error-message="validacaoMensagem"/>
+
+            <InputDefault
+            v-model="email"
+            title="Email"
+            type="text"
+            input-icon="/img/icones/email.png"
+            :required ="true"
+            :validated="validacaoEmail"
+            :error-message="validacaoMensagem"/>
+
+            <InputDefault
+            v-model="senha"
+            title="Senha"
+            type="password"
             input-icon="/img/icones/senha.png"
             :required ="true"
-            :validated="false"
-            error-message="Validação falhou"/>
+            :validated="validacaoSenha"
+            :error-message="validacaoMensagem"/>
+
+            <InputDefault
+            v-model="confirmarSenha"
+            title="Confirmar Senha"
+            type="password"
+            input-icon="/img/icones/senha.png"
+            :required ="true"
+            :validated="validacaoConfirmSenha"
+            :error-message="validacaoMensagem"/>
+
+
 
             <div class="centralizar">
 
               <button
-                @click="handleSubmit"
+                @click="requisicaoCadastro"
                 type="button"
                 style="margin-top: 30px"
                 class="botao-modelo-principal"
