@@ -11,7 +11,7 @@
 
         <div class="container-login-e-registro">
           <div class="box-botao">
-    
+
             <RouterLink to="/cadastro">
               <button class="button-garanta-sua-vaga">
                 <b>Garanta a sua vaga!</b>

@@ -7,27 +7,12 @@ import InputDefault from '@/components/InputDefault.vue'
 import { ref } from 'vue'
 
 //Variaves que vão mudar de valor durante a execução
-
-const nomeCompleto = ref('')
 const email = ref('')
 const senha = ref('')
-const confirmarSenha = ref('')
 
-const validacaoNome = ref(true)
 const validacaoEmail = ref(true)
 const validacaoSenha = ref(true)
-const validacaoConfirmSenha = ref(true)
 const validacaoMensagem = ref('')
-
-function validarNome(valor : string) : boolean {
-  if (valor.length == 0) {
-    validacaoNome.value = false
-    validacaoMensagem.value = 'O nome deve ser preenchido'
-    return false
-  }
-  validacaoNome.value = true
-  return true
-}
 
 function validarEmail(valor: string): boolean {
 
@@ -61,97 +46,41 @@ function validarSenha(valor: string): boolean {
   return true
 }
 
-function validarConfirmarSenha(
-  senhaValor: string,
-  confirmarSenhaValor: string
-): boolean {
+async function RequisicaoLogin() {
 
-  if (confirmarSenhaValor.length === 0) {
-    validacaoConfirmSenha.value = false
-    validacaoMensagem.value =
-      'A confirmação de senha deve ser preenchida'
-
-    return false
-  }
-
-  if (senhaValor !== confirmarSenhaValor) {
-    validacaoConfirmSenha.value = false
-    validacaoMensagem.value = 'As senhas não conferem'
-
-    return false
-  }
-
-  validacaoConfirmSenha.value = true
-  return true
-}
-
-async function consumirAPI() {
-
-  const json = JSON.stringify({
-    nome_usuario: nomeCompleto.value,
-    email: email.value,
-    senha: senha.value,
-  })
-
-  try {
-
-    const response = await fetch(
-      'https://backend-oh40.onrender.com/api/spotLivre/usuarios',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: json,
-      }
-    )
-
-    if (!response.ok) {
-      throw new Error('Erro na requisição')
+    if(!validarEmail(email.value) || !validarSenha(senha.value)){
+      return
     }
 
-    const data = await response.json()
+    if(!validarSenha(senha.value)){
+      return
+    }
 
-    console.log(data)
+    const json = JSON.stringify({
+      email: email.value,
+      senha: senha.value,
+    })
 
-  } catch (error) {
+    fetch("https://backend-oh40.onrender.com/api/spotLivre/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: json
+    })
+        .then(response => {
+            if (!response.ok) throw new Error("Erro na requisição")
+            return response.json()
+        })
+        .then(data => {
+            console.log(data)
+            localStorage.setItem("token",data.token)
 
-    console.error(error)
-    validacaoMensagem.value = 'Erro ao cadastrar usuário'
-
-  }
-}
-
-function requisicaoCadastro() {
-
-  validacaoNome.value = true
-  validacaoEmail.value = true
-  validacaoSenha.value = true
-  validacaoConfirmSenha.value = true
-  validacaoMensagem.value = ''
-
-  if (!validarNome(nomeCompleto.value)) {
-    return
-  }
-
-  if (!validarEmail(email.value)) {
-    return
-  }
-
-  if (!validarSenha(senha.value)) {
-    return
-  }
-
-  if (
-    !validarConfirmarSenha(
-      senha.value,
-      confirmarSenha.value
-    )
-  ) {
-    return
-  }
-
-  consumirAPI()
+            //redirecionar para tela home
+        })
+        .catch(error => {
+            console.error(error)
+        })
 }
 </script>
 
@@ -207,18 +136,18 @@ function requisicaoCadastro() {
 
               <div class="centralizar">
                 <button
-                @click="requisicaoCadastro"
+                @click="RequisicaoLogin"
                 type="button"
                 style="margin-top: 30px"
                 class="botao-modelo-principal"
                 >
-                  Cadastrar
+                  Entrar
                 </button>
               </div>
               <div style="margin-top: 15px" class="centralizar pc_view">
                 <span style="color: white; margin-right: 5px">Já possui uma conta?</span>
-                <RouterLink style="color: #ffcb00; text-decoration: none" to="/">
-                  fazer login
+                <RouterLink style="color: #ffcb00; text-decoration: none" to="/cadastro">
+                  fazer cadastro
                 </RouterLink>
               </div>
             </FormBase>

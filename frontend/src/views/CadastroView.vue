@@ -190,7 +190,7 @@ function requisicaoCadastro() {
             <div style="margin-bottom: 30px" class="centralizar pc_view">
               <span style="color: white; margin-right: 5px">Já possui uma conta?</span>
 
-              <RouterLink style="color: #ffcb00; text-decoration: none" to="/">
+              <RouterLink style="color: #ffcb00; text-decoration: none" to="/login">
                 fazer login
               </RouterLink>
             </div>
