@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('veiculos', function (Blueprint $table) {
             $table->id();
             // criando a coluna id_usuario e vinculando seu valor a coluna id da tabela usuarios (constrained(`usuarios`)), o valor de `id_usuario` é equivalente ao valor 'id' da tabela 'usuarios' por causa do (foreignId)
-            $table->foreignId('id_usuario')->constrained('usuarios');
+            $table->foreignId('id_usuario')->constrained('usuarios')->onDelete('cascade');
             $table->string('modelo', 50);
             // dois carros no banco de dados com a mesma placa é no mínimo suspeito
             $table->string('placa', 10)->unique();
