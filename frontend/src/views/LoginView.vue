@@ -158,7 +158,6 @@ function requisicaoCadastro() {
 <template>
   <main>
     <div class="container">
-
       <section class="sessao-apresentacao mb_view">
         <div class="logo-spot-livre">
           <img class="logo-dsin" src="/img/dsin-logo.png" alt="Dsin Logo" />
@@ -172,7 +171,6 @@ function requisicaoCadastro() {
 
       <section class="sessao-cadastro">
         <div class="background-card">
-
           <div class="pc_view">
             <section class="sessao-apresentacao">
               <div class="logo-spot-livre">
@@ -186,25 +184,9 @@ function requisicaoCadastro() {
             </section>
 
             <img src="/img/banner.svg" alt="Banner" class="banner_car" />
-
-            <div style="margin-bottom: 30px" class="centralizar pc_view">
-              <span style="color: white; margin-right: 5px">Já possui uma conta?</span>
-
-              <RouterLink style="color: #ffcb00; text-decoration: none" to="/">
-                fazer login
-              </RouterLink>
-            </div>
           </div>
+          <div>
             <FormBase>
-              <InputDefault
-              v-model="nomeCompleto"
-              title="Nome Completo"
-              type="text"
-              input-icon="/img/icones/usuario.png"
-              :required ="true"
-              :validated="validacaoNome"
-              :error-message="validacaoMensagem"/>
-
               <InputDefault
               v-model="email"
               title="Email"
@@ -223,34 +205,32 @@ function requisicaoCadastro() {
               :validated="validacaoSenha"
               :error-message="validacaoMensagem"/>
 
-              <InputDefault
-              v-model="confirmarSenha"
-              title="Confirmar Senha"
-              type="password"
-              input-icon="/img/icones/senha.png"
-              :required ="true"
-              :validated="validacaoConfirmSenha"
-              :error-message="validacaoMensagem"/>
-
               <div class="centralizar">
                 <button
-                  @click="requisicaoCadastro"
-                  type="button"
-                  style="margin-top: 30px"
-                  class="botao-modelo-principal"
+                @click="requisicaoCadastro"
+                type="button"
+                style="margin-top: 30px"
+                class="botao-modelo-principal"
                 >
                   Cadastrar
                 </button>
               </div>
+              <div style="margin-top: 15px" class="centralizar pc_view">
+                <span style="color: white; margin-right: 5px">Já possui uma conta?</span>
+                <RouterLink style="color: #ffcb00; text-decoration: none" to="/">
+                  fazer login
+                </RouterLink>
+              </div>
             </FormBase>
+          </div>
         </div>
       </section>
-
     </div>
   </main>
 </template>
 
 <style scoped>
+
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
 main {
@@ -260,18 +240,27 @@ main {
     justify-content: center;
     padding: 20px 0;
 }
+
 .centralizar {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: row !important;
-    gap: 0 !important;
 }
 
 .container {
     display: flex;
     justify-content: center;
     flex-direction: column;
+    width: 100%;
+    min-height: calc(100vh - 40px);
+}
+
+.sessao-cadastro {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 
 .botao-modelo-principal {
@@ -287,7 +276,7 @@ main {
 }
 
 .botao-modelo-principal:hover {
-      box-shadow: 0px 1px 30px 10px #ffd90266;
+    box-shadow: 0px 1px 30px 10px #ffd90266;
 }
 
 .logo-spot-livre{
@@ -301,17 +290,21 @@ main {
     text-align: center;
     user-select: none;
 }
+
 .logo-spot-livre .logo-dsin {
     width: 32px;
     height: 32px;
 }
+
 .spot-livre-spot {
     color: #FECC02;
     font-size: 30px;
 }
+
 .spot-livre-livre {
     color: white;
 }
+
 .sessao-apresentacao{
     display: flex;
     flex-direction: column;
@@ -338,9 +331,9 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 40px;
     gap: 70px;
 }
+
 .banner_car {
     max-width: 45vw;
 }
@@ -357,12 +350,21 @@ main {
 }
 
 @media (max-width: 1000px) {
+
+    .background-card{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 40px;
+      gap: 70px;
+    }
+
     .pc_view {
         display: none;
     }
 
     .mb_view {
-    display: flex;
+        display: flex;
     }
 
     .botao-modelo-principal {
@@ -370,4 +372,5 @@ main {
         border-radius: 50px;
     }
 }
+
 </style>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import iconError from '@/assets/icons/iconMsgErr.png'
 
 import { ref } from 'vue'
 
@@ -84,7 +85,7 @@ const esconderSenha = ref(true)
 
     <img
       class="icon-error"
-      src="../assets/icons/iconMsgErr.png"
+      :src="iconError"
       alt="Erro"
     >
 
