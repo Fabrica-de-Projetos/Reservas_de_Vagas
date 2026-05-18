@@ -1,20 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+<script setup lang="ts">
+import HeaderComponent from '@/components/HeaderComponent.vue';
+import HeroSection from '@/components/HeroSection.vue';
+import SobreNos from '@/components/SobreNos.vue';
+</script>
 
-*{
-    box-sizing: border-box;
-}
-
-html{
-    scroll-behavior: smooth;
-}
-
-body {
-    margin: 0;
-    background-color: #000;
-    color: white;
-    font-family: "Montserrat", sans-serif;
-}
-
+<template>
+  <HeaderComponent />
+  <main>
+    <HeroSection />
+    <SobreNos />
+  </main>
+  <footer></footer>
+</template>
+<style>
 .container-comeco{
     display: flex;
     justify-content: space-between;
@@ -29,7 +27,6 @@ body {
     padding: 50px;
 }
 
-/* LOGO */
 .logo-spot-livre{
     align-items: center;
     display: flex;
@@ -52,7 +49,6 @@ body {
     color: white;
 }
 
-/* HEADER */
 .container-header{
     position: fixed;
     display: flex;
@@ -101,7 +97,6 @@ body {
     margin: 0;
 }
 
-/* BOTÃO */
 .button-garanta-sua-vaga{
     background-color: #FFCB00;
     width: 300px;
@@ -131,7 +126,7 @@ body {
 }
 
 .login-e-registro{
-    font-size: 15px;  
+    font-size: 15px;
     font-weight: 100;
 }
 
@@ -140,7 +135,6 @@ body {
     text-align: center;
 }
 
-/*Sessão 2 */
 
 .sessao-sobre-nos{
     padding: 50px 20px;
@@ -189,7 +183,6 @@ body {
     color: #FECC02;
 }
 
-/* DESKTOP */
 @media (min-width:577px){
     .container-api-google-e-apple{
         display: flex;
@@ -217,7 +210,6 @@ body {
     }
 }
 
-/* MOBILE */
 @media (max-width: 576px){
 
     .container-header{
@@ -326,3 +318,4 @@ body {
         text-align: left;
     }
 }
+</style>
