@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('vagas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_estacionamento')->constrained('estacionamentos');
+            $table->foreignId('id_estacionamento')->constrained('estacionamentos')->onDelete('cascade');
             $table->integer('numero');
             $table->string('tipo', 100);
             $table->timestamps();
