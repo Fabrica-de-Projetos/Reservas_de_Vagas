@@ -45,12 +45,12 @@ class ReservaController extends Controller
                 'horariosDisponiveis' => $horariosDisponiveis,
                 // 'reservasAtivas' => $reservasAtivas,
                 // 'horariosIndisponiveis' => $horariosIndisponiveis
-            ]);
+            ], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Não foi possível recuperar as reservas.',
                 'errors' => $th->getMessage()
-            ]);
+            ], 500);
         }
     }
 
