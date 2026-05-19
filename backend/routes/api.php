@@ -16,3 +16,5 @@ Route::post("/spotLivre/login", [LoginController::class, 'login']);
 
 /*Rota para veiculos*/
 Route::middleware('auth:sanctum')->Resource("/spotLivre/veiculos", VeiculoController::class);
+
+Route::get("/spotLivre/reservas/horarios-disponiveis/{id}", [ReservaController::class, 'horariosDisponiveis']);
