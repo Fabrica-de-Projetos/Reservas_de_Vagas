@@ -42,9 +42,9 @@ class ReservaController extends Controller
             }
 
             return response()->json([
-                'reservasAtivas' => $reservasAtivas,
                 'horariosDisponiveis' => $horariosDisponiveis,
-                'horariosIndisponiveis' => $horariosIndisponiveis
+                // 'reservasAtivas' => $reservasAtivas,
+                // 'horariosIndisponiveis' => $horariosIndisponiveis
             ]);
         } catch (\Throwable $th) {
             return response()->json([
