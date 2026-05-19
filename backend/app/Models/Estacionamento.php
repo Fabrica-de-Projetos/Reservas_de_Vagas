@@ -21,6 +21,6 @@ class Estacionamento extends Model
 
     public function vagas()
     {
-        return $this->hasMany(Vaga::class, 'estacionamento_id');
+        return $this->hasMany(Vaga::class, 'id_estacionamento');
     }
 }
