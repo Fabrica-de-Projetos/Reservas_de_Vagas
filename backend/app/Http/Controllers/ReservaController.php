@@ -3,11 +3,57 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reserva;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Nette\Schema\ValidationException;
 
 class ReservaController extends Controller
 {
+
+    public function horariosDisponiveis(int $idVaga)
+    {
+        try {
+            // trazendo os registros da tabela reserva onde o valor da coluna id_vaga da tabela reservas corresponde com o valor que passamos de parâmetro ($idVaga)
+            // se ele tá me retornando alguma coisa, significa que eu tenho horários reservados relacionado a aquela vaga 
+            // toda consulta SQL (com where e etc precisa do ->get para que eu pegue os valores daquela consulta no banco)
+            $reservasAtivas = Reserva::where('id_vaga', $idVaga)->get();
+            $horarios = [
+                "08:00",
+                "09:30",
+                "11:00",
+                "12:30",
+                "14:00",
+                "15:30",
+                "17:00",
+                "18:30",
+                "19:30"
+            ];
+            $horariosDisponiveis = [];
+            $horariosIndisponiveis = [];
+            // pegando os horários que NÃO posso reservar
+            foreach ($reservasAtivas as $reservaAtiva) {
+                $horariosIndisponiveis[] = Carbon::parse($reservaAtiva->data_inicio)->format('H:i');
+            }
+
+            foreach ($horarios as $horario) {
+                if (!in_array($horario, $horariosIndisponiveis)) {
+                    $horariosDisponiveis[] = $horario;
+                }
+            }
+
+            return response()->json([
+                'horariosDisponiveis' => $horariosDisponiveis,
+                // 'reservasAtivas' => $reservasAtivas,
+                // 'horariosIndisponiveis' => $horariosIndisponiveis
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Não foi possível recuperar as reservas.',
+                'errors' => $th->getMessage()
+            ], 500);
+        }
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -108,7 +154,7 @@ class ReservaController extends Controller
             return response()->json([
                 'message' => 'Reserva atualizada com sucesso.',
                 'reserva' => $reserva
-                ], 200);
+            ], 200);
         } catch (ValidationException $e) {
             return response()->json([
                 'message' => 'Erro de validação.',
