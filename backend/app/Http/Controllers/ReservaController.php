@@ -2,54 +2,105 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Reserva;
+use App\Http\Requests\Reserva\ReservaStoreRequest;
+use App\Models\{
+    Reserva,
+    Vaga,
+    Usuario,
+    Veiculo
+};
 use Carbon\Carbon;
+use Error;
 use Illuminate\Http\Request;
 use Nette\Schema\ValidationException;
 
 class ReservaController extends Controller
 {
 
-    public function horariosDisponiveis(int $idVaga)
+    protected function encontraHorariosIndisponiveis(Vaga $vaga): array
+    {
+        // trazendo os registros da tabela reserva onde o valor da coluna id_vaga da tabela reservas corresponde com o valor que passamos de parâmetro ($idVaga)
+        // se ele tá me retornando alguma coisa, significa que eu tenho horários reservados relacionado a aquela vaga 
+        // toda consulta SQL (com where e etc precisa do ->get para que eu pegue os valores daquela consulta no banco)
+        $reservasAtivas = Reserva::where('id_vaga', $vaga->id)->get();
+        $horariosIndisponiveis = [];
+
+        // pegando os horários que NÃO posso reservar
+        foreach ($reservasAtivas as $reservaAtiva) {
+            $horariosIndisponiveis[] = Carbon::parse($reservaAtiva->data_inicio)->format('H:i');
+        }
+
+        return $horariosIndisponiveis;
+    }
+
+    protected function encontraHorariosDisponiveis(array $horariosIndisponiveis): array
+    {
+        $horarios = [
+            "08:00",
+            "09:30",
+            "11:00",
+            "12:30",
+            "14:00",
+            "15:30",
+            "17:00",
+            "18:30",
+            "19:30"
+        ];
+
+        $horariosDisponiveis = [];
+
+
+        foreach ($horarios as $horario) {
+            if (!in_array($horario, $horariosIndisponiveis)) {
+                $horariosDisponiveis[] = $horario;
+            }
+        }
+
+        return $horariosDisponiveis;
+    }
+
+    public function horariosDisponiveis(Vaga $vaga)
     {
         try {
-            // trazendo os registros da tabela reserva onde o valor da coluna id_vaga da tabela reservas corresponde com o valor que passamos de parâmetro ($idVaga)
-            // se ele tá me retornando alguma coisa, significa que eu tenho horários reservados relacionado a aquela vaga 
-            // toda consulta SQL (com where e etc precisa do ->get para que eu pegue os valores daquela consulta no banco)
-            $reservasAtivas = Reserva::where('id_vaga', $idVaga)->get();
-            $horarios = [
-                "08:00",
-                "09:30",
-                "11:00",
-                "12:30",
-                "14:00",
-                "15:30",
-                "17:00",
-                "18:30",
-                "19:30"
-            ];
-            $horariosDisponiveis = [];
-            $horariosIndisponiveis = [];
-            // pegando os horários que NÃO posso reservar
-            foreach ($reservasAtivas as $reservaAtiva) {
-                $horariosIndisponiveis[] = Carbon::parse($reservaAtiva->data_inicio)->format('H:i');
-            }
-
-            foreach ($horarios as $horario) {
-                if (!in_array($horario, $horariosIndisponiveis)) {
-                    $horariosDisponiveis[] = $horario;
-                }
-            }
+            $horariosIndisponiveis = $this->encontraHorariosIndisponiveis($vaga);
+            $horariosDisponiveis = $this->encontraHorariosDisponiveis($horariosIndisponiveis);
 
             return response()->json([
                 'horariosDisponiveis' => $horariosDisponiveis,
-                // 'reservasAtivas' => $reservasAtivas,
-                // 'horariosIndisponiveis' => $horariosIndisponiveis
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Não foi possível recuperar as reservas.',
                 'errors' => $th->getMessage()
+            ], 500);
+        }
+    }
+
+    public function reservar(ReservaStoreRequest $request, Usuario $usuario, Veiculo $veiculo, Vaga $vaga)
+    {
+        try {            
+            $reserva = Reserva::create([
+                'id_usuario' => $usuario->id,
+                'id_veiculo' => $veiculo->id,
+                'id_vaga' => $vaga->id,
+                'data_inicio' => $request->data_inicio,
+                'data_fim' => $request->data_fim
+            ]);
+
+            return response()->json([
+                'message' => 'Reserva realizada com sucesso!',
+                'reserva' => $reserva
+            ], 201);
+
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Erro de validação.',
+                'errors' => $e->getMessage()
+            ], 422);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Erro interno no servidor',
+                'error' => $th->getMessage()
             ], 500);
         }
     }

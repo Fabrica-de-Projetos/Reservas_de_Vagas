@@ -18,3 +18,4 @@ Route::post("/spotLivre/login", [LoginController::class, 'login']);
 Route::middleware('auth:sanctum')->Resource("/spotLivre/veiculos", VeiculoController::class);
 
 Route::get("/spotLivre/reservas/horarios-disponiveis/{id}", [ReservaController::class, 'horariosDisponiveis']);
+Route::post("/spotLivre/reservas/reservar/{usuario}/{veiculo}/{vaga}", [ReservaController::class, 'reservar']);
