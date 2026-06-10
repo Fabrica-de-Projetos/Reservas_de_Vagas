@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Http\Requests\Usuario\UsuarioStoreRequest;
+use App\Http\Requests\usuario\UsuarioUpdateRequest;
 use Illuminate\Http\Request;
 // namespace que me permite usar método de criptografia de senha em hash
 use Illuminate\Support\Facades\Hash;
@@ -32,15 +35,9 @@ class UsuarioController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UsuarioStoreRequest $request)
     {
         try {
-            $request->validate([
-                'nome_usuario' => 'required|string|max:100',
-                'email' => 'required|email|unique:usuarios,email',
-                'senha' => 'required|min:6',
-            ]);
-
             Usuario::create([
                 'nome' => $request->nome_usuario,
                 'email' => $request->email,
@@ -68,11 +65,9 @@ class UsuarioController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Usuario $usuario)
     {
         try {
-            $usuario = Usuario::findOrFail($id);
-
             return response()->json([
                 'usuario' => $usuario
             ], 200);
@@ -88,21 +83,9 @@ class UsuarioController extends Controller
      * Update the specified resource in storage.
      * ! lembrar os meninos de aplicar o método PATCH nesse aqui, permitindo alteração parcial dos valores passados
      */
-    public function update(Request $request, string $id)
+    public function update(UsuarioUpdateRequest $request, Usuario $usuario)
     {
         try {
-            $usuario = Usuario::findOrFail($id);
-
-            $request->validate([
-                'nome_usuario' => 'sometimes|string|max:100',
-                'email' => [
-                    'sometimes',
-                    'email',
-                    Rule::unique('usuarios', 'email')->ignore($usuario->$id)
-                ],
-                'senha' => 'sometimes|min:6',
-            ]);
-
             $usuario->update([
                 'nome' => $request->nome_usuario ?? $usuario->nome,
                 'email' => $request->email ?? $usuario->email,
@@ -129,10 +112,10 @@ class UsuarioController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Usuario $usuario)
     {
         try {
-            Usuario::destroy($id);
+            $usuario->delete();
 
             return response()->json(['message' => 'Usuário excluído com sucesso!'], 200);
         } catch (\Throwable $th) {
