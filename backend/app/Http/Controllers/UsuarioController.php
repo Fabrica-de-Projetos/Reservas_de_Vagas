@@ -4,11 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Usuario\UsuarioStoreRequest;
 use App\Http\Requests\usuario\UsuarioUpdateRequest;
-use Illuminate\Http\Request;
 // namespace que me permite usar método de criptografia de senha em hash
 use Illuminate\Support\Facades\Hash;
 use App\Models\Usuario;
-use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class UsuarioController extends Controller
