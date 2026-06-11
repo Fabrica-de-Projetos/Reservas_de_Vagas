@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Estacionamento;
 use Illuminate\Http\Request;
+use App\Http\Requests\Estacionamento\{EstacionamentoStoreRequest, EstacionamentoUpdateRequest};
 use Illuminate\Validation\ValidationException;
 
 class EstacionamentoController extends Controller
@@ -30,20 +31,9 @@ class EstacionamentoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(EstacionamentoStoreRequest $request)
     {
         try {
-            $request->validate([
-                'nome' => ['required', 'string', 'max:100'],
-                'rua' => ['required', 'string', 'max:100'],
-                'numero' => ['required', 'string', 'max:10'],
-                'bairro' => ['required', 'string', 'max:100'],
-                'cep' => ['required', 'string', 'max:8'],
-                'cidade' => ['required', 'string', 'max:50'],
-                'estado' => ['sometimes', 'string', 'max:2'],
-                'total_vagas' => ['required', 'integer']
-            ]);
-
             $estacionamento = Estacionamento::create([
                 'nome' => $request->nome,
                 'rua' => $request->rua,
@@ -75,10 +65,9 @@ class EstacionamentoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Estacionamento $estacionamento)
     {
         try {
-            $estacionamento = Estacionamento::findOrFail($id);
             return response()->json([
                 'estacionamento' => $estacionamento
             ], 200);
@@ -93,22 +82,9 @@ class EstacionamentoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(EstacionamentoUpdateRequest $request, Estacionamento $estacionamento)
     {
         try {
-            $estacionamento = Estacionamento::findOrFail($id);
-
-            $request->validate([
-                'nome' => ['sometimes', 'string', 'max:100'],
-                'rua' => ['sometimes', 'string', 'max:100'],
-                'numero' => ['sometimes', 'string', 'max:10'],
-                'bairro' => ['sometimes', 'string', 'max:100'],
-                'cep' => ['sometimes', 'string', 'max:8'],
-                'cidade' => ['sometimes', 'string', 'max:50'],
-                'estado' => ['sometimes', 'string', 'max:2'],
-                'total_vagas' => ['sometimes', 'integer']
-            ]);
-
             $estacionamento->update([
                 'nome' => $request->nome ?? $estacionamento->nome,
                 'rua' => $request->rua ?? $estacionamento->rua,
@@ -140,10 +116,10 @@ class EstacionamentoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Estacionamento $estacionamento)
     {
         try {
-            Estacionamento::destroy($id);
+            $estacionamento->delete();
 
             return response()->json([
                 'message' => 'Estacionamento excluído com sucesso!'
