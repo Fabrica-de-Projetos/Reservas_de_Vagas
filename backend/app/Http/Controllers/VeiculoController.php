@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\Veiculo\{VeiculoStoreRequest, VeiculoUpdateRequest};
 use App\Models\Veiculo;
 use Exception;
 
@@ -23,16 +24,8 @@ class VeiculoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(VeiculoStoreRequest $request)
     {
-        $request->validate([
-            'modelo' => 'required|string',
-            'placa' => 'required|string',
-            'marca' => 'required|string',
-            'cor' => 'required|string',
-            'ano' => 'required|digits:4'
-        ]);
-
         try {
             $veiculo = Veiculo::create([
                 'id_usuario' => $request->user()->id,
@@ -58,10 +51,9 @@ class VeiculoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Veiculo $veiculo)
     {
         try {
-            $veiculo = Veiculo::FindOrFail($id);
             return response()->json(['veiculo' => $veiculo], 200);
         } catch (\Throwable $th) {
             return response()->json([
@@ -74,18 +66,10 @@ class VeiculoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(VeiculoUpdateRequest $request, Veiculo $veiculo)
     {
-        $request->validate([
-            'modelo' => 'sometimes|string',
-            'placa' => 'sometimes|string',
-            'marca' => 'sometimes|string',
-            'cor' => 'sometimes|string',
-            'ano' => 'sometimes|digits:4'
-        ]);
-
         $veiculo = Veiculo::where('id_usuario', $request->user()->id)
-            ->where('id', $id)
+            ->where('id', $veiculo->id)
             ->first();
 
         if ($veiculo === null) {
@@ -112,10 +96,10 @@ class VeiculoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request, string $id)
+    public function destroy(Request $request, Veiculo $veiculo)
     {
-        $veiculo = Veiculo::where('id_usuario', $request->user()->id)
-            ->where('id', $id)
+        $veiculo = Veiculo::where('id', $veiculo->id)
+            ->where('id_usuario', $request->user()->id)
             ->first();
 
         if ($veiculo === null) {
