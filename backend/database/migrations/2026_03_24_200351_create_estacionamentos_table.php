@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('rua', 100);
             $table->string('numero', 10);
             $table->string('bairro', 100);
-            $table->string('cep', 8);
+            $table->string('cep', 20);
             $table->string('cidade', 50);
             $table->string('estado', 2);
             $table->integer('total_vagas');
