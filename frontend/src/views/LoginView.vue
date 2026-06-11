@@ -1,11 +1,7 @@
-// aqui eu chamo o css da tela de cadastro lá no finalzinho do codigo
-
-import FormBase from '@/components/FormBase.vue'
-import InputDefault from '@/components/InputDefault.vue'
-
 <script lang="ts">
 import FormBase from '@/components/FormBase.vue';
 import InputDefault from '@/components/InputDefault.vue';
+import { useRouter } from 'vue-router';
 
 export default {
   name: "LoginView",
@@ -17,11 +13,12 @@ export default {
     return {
       email: "",
       senha: "",
+      validacaoMensagem: "",
+      jsonRequisicao: "",
       validacaoEmail: true,
       validacaoSenha: true,
-      validacaoMensagem: "",
       regexEmail: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-      jsonRequisicao: "",
+      router: useRouter()
     }
   },
   methods: {
@@ -87,6 +84,7 @@ export default {
 
       const respostaApi = await this.ChamadaAPI()
       localStorage.setItem("TokenAuth", respostaApi.token)
+      this.router.push("/vagas")
     }
   }
 }

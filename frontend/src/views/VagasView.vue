@@ -1,15 +1,35 @@
-<script setup lang="ts">
+<script lang="ts">
 import Modal from '@/components/ModalVaga.vue';
+import { verificarToken } from '@/utils/verificarToken';
 
-const vagasPiso1 = Array.from({ length: 10 }, (_, i) => ({
-  id: i + 1,
-  status: 'Disponível',
-}))
+export default {
+  name: "VagasView",
+  components: {
+    Modal
+  },
+  data() {
+    return {
+      exibirModal: false,
+      vagasPiso1: Array.from({ length: 10 }, (_, i) => ({id: i + 1, status: 'Disponível'})),
+      vagasPiso2: Array.from({ length: 10 }, (_, i) => ({id: i + 11,status: 'Disponível'})),
+      horarios: ['08:00','09:30','11:00','13:30','15:00','16:30','18:00','19:30']
+    }
+  },
+  mounted() {
+    verificarToken()
+  },
+  methods: {
+    AbrirModal()
+    {
+      this.exibirModal = true
+    },
 
-const vagasPiso2 = Array.from({ length: 10 }, (_, i) => ({
-  id: i + 11,
-  status: 'Disponível',
-}))
+    FecharModal()
+    {
+      this.exibirModal = false
+    }
+  }
+}
 </script>
 
 <template>
@@ -50,7 +70,7 @@ const vagasPiso2 = Array.from({ length: 10 }, (_, i) => ({
           <p class="vaga-nome">Vaga {{ vaga.id }}</p>
           <img src="/img/icones/carro.png" alt="Carro" class="icone-vaga" />
           <p class="vaga-status">{{ vaga.status }}</p>
-          <button class="btn-horarios">Horários</button>
+          <button class="btn-horarios" @click="AbrirModal">Horários</button>
         </div>
       </div>
     </section>
@@ -67,7 +87,11 @@ const vagasPiso2 = Array.from({ length: 10 }, (_, i) => ({
       </div>
     </section>
     <Modal
+    :horarios="horarios"
+    :exibir="exibirModal"
+    @fechar="exibirModal = false"
     imagem="https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2026/05/Neymar-Raphinha-Selecao-e1779992588361.webp?w=884"/>
+
 
   </div>
 </template>

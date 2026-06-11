@@ -1,28 +1,21 @@
-<script setup lang="ts">
-const props = defineProps<{
-  imagem: string
-}>()
-
-
-const emit = defineEmits(['close'])
-const horarios = [
-  '08:00',
-  '09:30',
-  '11:00',
-  '13:30',
-  '15:00',
-  '16:30',
-  '18:00',
-  '19:30'
-]
+<script lang="ts">
+export default {
+  name: "ModalVaga",
+  props: {
+    imagem: String,
+    horarios: Array,
+    exibir: Boolean,
+  },
+  emits: ["fechar"]
+}
 
 </script>
 <template>
-  <div class="modal-overlay">
+  <div v-if="exibir" class="modal-overlay">
     <div class="modal-card">
-      <div class="imagem-modal" :style="{ backgroundImage: `url(${props.imagem})` }">
+      <div class="imagem-modal" :style="{ backgroundImage: `url(${imagem})` }">
         <div class="imagem-overlay"></div>
-        <button class="botao-fechar" @click="emit('close')">
+        <button class="botao-fechar" @click="$emit('fechar')">
           ✕
         </button>
       </div>
@@ -81,7 +74,6 @@ const horarios = [
       </div>
     </div>
   </div>
-
 </template>
 
 <style scoped>
