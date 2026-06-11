@@ -3,8 +3,29 @@ export default {
   name: "ModalVaga",
   props: {
     imagem: String,
-    horarios: Array,
     exibir: Boolean,
+    idVaga: Number
+  },
+  data() {
+    return{
+      horarios: []
+    }
+  },
+  mounted() {
+    this.BuscarHorarios(this.idVaga!)
+  },
+  methods: {
+    async BuscarHorarios(idVaga: number)
+      {
+        const respostApi = await fetch(`https://backend-oh40.onrender.com/api/spotLivre/reservas/horarios-disponiveis/${idVaga}`)
+        .then(resposta => {
+          return resposta.json()
+        })
+
+        this.horarios = respostApi
+        console.log(this.horarios)
+        return this.horarios
+      }
   },
   emits: ["fechar"]
 }
@@ -30,10 +51,12 @@ export default {
           Selecione o melhor horário para você.
         </p>
         <div class="tempo-grid">
-          <button v-for="horario in horarios" :key="horario" class="tempo-button">
+          <template v-for="lista in horarios" :key="lista">
+            <button v-for="horario in lista" :key="horario" class="tempo-button">
             <!-- <img class="icon" src="/img/icones/relogio.png"> -->
-            {{ horario }}
-          </button>
+              {{ horario }}
+            </button>
+          </template>
         </div>
 
         <div class="info-container">
