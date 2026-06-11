@@ -1,86 +1,92 @@
-// aqui eu chamo o css da tela de cadastro lá no finalzinho do codigo
+<script lang="ts">
+import FormBase from '@/components/FormBase.vue';
+import InputDefault from '@/components/InputDefault.vue';
+import { useRouter } from 'vue-router';
 
-
-<script setup lang="ts">
-import FormBase from '@/components/FormBase.vue'
-import InputDefault from '@/components/InputDefault.vue'
-import { ref } from 'vue'
-
-//Variaves que vão mudar de valor durante a execução
-const email = ref('')
-const senha = ref('')
-
-const validacaoEmail = ref(true)
-const validacaoSenha = ref(true)
-const validacaoMensagem = ref('')
-
-function validarEmail(valor: string): boolean {
-
-  if (valor.length === 0) {
-    validacaoEmail.value = false
-    validacaoMensagem.value = 'O email deve ser preenchido'
-    return false
-  }
-
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
-  if (!regex.test(valor)) {
-    validacaoEmail.value = false
-    validacaoMensagem.value = 'Email inválido'
-    return false
-  }
-
-  validacaoEmail.value = true
-  return true
-}
-
-function validarSenha(valor: string): boolean {
-
-  if (valor.length === 0) {
-    validacaoSenha.value = false
-    validacaoMensagem.value = 'A senha deve ser informada'
-    return false
-  }
-
-  validacaoSenha.value = true
-  return true
-}
-
-async function RequisicaoLogin() {
-
-    if(!validarEmail(email.value) || !validarSenha(senha.value)){
-      return
+export default {
+  name: "LoginView",
+  components: {
+    FormBase,
+    InputDefault
+  },
+  data() {
+    return {
+      email: "",
+      senha: "",
+      validacaoMensagem: "",
+      jsonRequisicao: "",
+      validacaoEmail: true,
+      validacaoSenha: true,
+      regexEmail: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+      router: useRouter()
     }
+  },
+  methods: {
 
-    if(!validarSenha(senha.value)){
-      return
-    }
+    ValidarEmail(valor: string) {
 
-    const json = JSON.stringify({
-      email: email.value,
-      senha: senha.value,
-    })
+      if (valor.length === 0) {
+        this.validacaoMensagem = "O email deve ser preenchido";
+        this.validacaoEmail = false
+        return this.validacaoEmail
+      }
+      else if (!this.regexEmail.test(valor)) {
+        this.validacaoMensagem = "Email inválido";
+        this.validacaoEmail = false
+        return this.validacaoEmail
+      }
 
-    fetch("https://backend-oh40.onrender.com/api/spotLivre/login", {
+      this.validacaoEmail = true
+      return this.validacaoEmail
+    },
+
+    ValidarSenha(valor: string) {
+      if (valor.length === 0) {
+        this.validacaoMensagem = 'A senha deve ser informada'
+        this.validacaoSenha = false
+        return this.validacaoSenha
+      }
+
+      this.validacaoSenha = true
+      return this.validacaoSenha
+    },
+
+    async ChamadaAPI() {
+
+      this.jsonRequisicao = JSON.stringify({
+        email: this.email,
+        senha: this.senha
+      })
+
+      const respostaApi = fetch("https://backend-oh40.onrender.com/api/spotLivre/login", {
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+          "Content-Type": "application/json"
         },
-        body: json
-    })
+        body: this.jsonRequisicao
+      })
         .then(response => {
-            if (!response.ok) throw new Error("Erro na requisição")
-            return response.json()
+          return response.json()
         })
-        .then(data => {
-            console.log(data)
-            localStorage.setItem("token",data.token)
 
-            //redirecionar para tela home
-        })
-        .catch(error => {
-            console.error(error)
-        })
+      return respostaApi
+    },
+
+    async RequisicaoLogin() {
+
+      if (!this.ValidarEmail(this.email)) {
+        return
+      }
+
+      if (!this.ValidarSenha(this.senha)) {
+        return
+      }
+
+      const respostaApi = await this.ChamadaAPI()
+      localStorage.setItem("TokenAuth", respostaApi.token)
+      this.router.push("/vagas")
+    }
+  }
 }
 </script>
 
@@ -97,7 +103,6 @@ async function RequisicaoLogin() {
         <h1 class="titulo-apresentacao">Seja bem vindo!</h1>
         <h3 class="mensagem-apresentacao">Chegou, registrou, estacionou</h3>
       </section>
-
       <section class="sessao-cadastro">
         <div class="background-card">
           <div class="pc_view">
@@ -116,31 +121,14 @@ async function RequisicaoLogin() {
           </div>
           <div>
             <FormBase>
-              <InputDefault
-              v-model="email"
-              title="Email"
-              type="text"
-              input-icon="/img/icones/email.png"
-              :required ="true"
-              :validated="validacaoEmail"
-              :error-message="validacaoMensagem"/>
+              <InputDefault v-model="email" title="Email" type="text" input-icon="/img/icones/email.png"
+                :required="true" :validated="validacaoEmail" :error-message="validacaoMensagem" />
 
-              <InputDefault
-              v-model="senha"
-              title="Senha"
-              type="password"
-              input-icon="/img/icones/senha.png"
-              :required ="true"
-              :validated="validacaoSenha"
-              :error-message="validacaoMensagem"/>
+              <InputDefault v-model="senha" title="Senha" type="password" input-icon="/img/icones/senha.png"
+                :required="true" :validated="validacaoSenha" :error-message="validacaoMensagem" />
 
               <div class="centralizar">
-                <button
-                @click="RequisicaoLogin"
-                type="button"
-                style="margin-top: 30px"
-                class="botao-modelo-principal"
-                >
+                <button @click="RequisicaoLogin" type="button" style="margin-top: 30px" class="botao-modelo-principal">
                   Entrar
                 </button>
               </div>
@@ -159,147 +147,145 @@ async function RequisicaoLogin() {
 </template>
 
 <style scoped>
-
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
 main {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
 }
 
 .centralizar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row !important;
 }
 
 .container {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    width: 100%;
-    min-height: calc(100vh - 40px);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  min-height: calc(100vh - 40px);
 }
 
 .sessao-cadastro {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 .botao-modelo-principal {
-    background-color: #FFCB00;
-    width: 300px;
-    height: 50px;
-    font-family: "Montserrat", sans-serif;
-    font-size: 16px;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+  background-color: #FFCB00;
+  width: 300px;
+  height: 50px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .botao-modelo-principal:hover {
-    box-shadow: 0px 1px 30px 10px #ffd90266;
+  box-shadow: 0px 1px 30px 10px #ffd90266;
 }
 
-.logo-spot-livre{
-    width: 189px;
-    height: 37px;
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    user-select: none;
+.logo-spot-livre {
+  width: 189px;
+  height: 37px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  user-select: none;
 }
 
 .logo-spot-livre .logo-dsin {
-    width: 32px;
-    height: 32px;
+  width: 32px;
+  height: 32px;
 }
 
 .spot-livre-spot {
-    color: #FECC02;
-    font-size: 30px;
+  color: #FECC02;
+  font-size: 30px;
 }
 
 .spot-livre-livre {
-    color: white;
+  color: white;
 }
 
-.sessao-apresentacao{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
+.sessao-apresentacao {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
-.titulo-apresentacao{
-    margin-top: 20px;
-    font-family: "Montserrat", sans-serif;
-    font-weight:700;
-    font-size: 30px;
-    color: white;
+.titulo-apresentacao {
+  margin-top: 20px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  font-size: 30px;
+  color: white;
 }
 
-.mensagem-apresentacao{
-    font-family: "Montserrat", sans-serif;
-    font-weight: 500;
-    color: #FFCB00;
-    font-size: 20px;
+.mensagem-apresentacao {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  color: #FFCB00;
+  font-size: 20px;
 }
 
-.background-card{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 70px;
+.background-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 70px;
 }
 
 .banner_car {
-    max-width: 45vw;
+  max-width: 45vw;
 }
 
 .mb_view {
-    display: none;
+  display: none;
 }
 
 .pc_view {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 @media (max-width: 1000px) {
 
-    .background-card{
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 40px;
-      gap: 70px;
-    }
+  .background-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
+    gap: 70px;
+  }
 
-    .pc_view {
-        display: none;
-    }
+  .pc_view {
+    display: none;
+  }
 
-    .mb_view {
-        display: flex;
-    }
+  .mb_view {
+    display: flex;
+  }
 
-    .botao-modelo-principal {
-        width: 100%;
-        border-radius: 50px;
-    }
+  .botao-modelo-principal {
+    width: 100%;
+    border-radius: 50px;
+  }
 }
-
 </style>
