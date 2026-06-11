@@ -5,7 +5,7 @@ namespace App\Http\Requests\Reserva;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ReservaStoreRequest extends FormRequest
+class ReservaUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +23,8 @@ class ReservaStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'data_inicio' => ['required', 'date'],
-            'data_fim' => ['required', 'date', 'after:data_inicio']
+            'data_inicio' => ['sometimes', 'date', 'before:data_fim'],
+            'data_fim' => ['sometimes', 'date', 'after:data_inicio']
         ];
     }
 }

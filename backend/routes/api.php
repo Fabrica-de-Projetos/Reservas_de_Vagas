@@ -19,3 +19,4 @@ Route::middleware('auth:sanctum')->Resource("/spotLivre/veiculos", VeiculoContro
 
 Route::get("/spotLivre/reservas/horarios-disponiveis/{id}", [ReservaController::class, 'horariosDisponiveis']);
 Route::post("/spotLivre/reservas/reservar/{usuario}/{veiculo}/{vaga}", [ReservaController::class, 'reservar']);
+Route::patch("/spotLivre/reservas/atualizar/{reserva}", [ReservaController::class, 'atualizar']);
