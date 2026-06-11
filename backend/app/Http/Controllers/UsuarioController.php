@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Usuario\UsuarioStoreRequest;
-use App\Http\Requests\usuario\UsuarioUpdateRequest;
+use App\Http\Requests\Usuario\{UsuarioStoreRequest, UsuarioUpdateRequest};
 // namespace que me permite usar método de criptografia de senha em hash
 use Illuminate\Support\Facades\Hash;
 use App\Models\Usuario;

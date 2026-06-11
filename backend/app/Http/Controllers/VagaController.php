@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Vaga;
+use App\Http\Requests\Vaga\{VagaStoreRequest, VagaUpdateRequest};
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Validation\Rule;
 
 class VagaController extends Controller
 {
@@ -31,21 +31,9 @@ class VagaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(VagaStoreRequest $request)
     {
         try {
-            $request->validate([
-                'id_estacionamento' => 'required|integer',
-                'numero' => [
-                    'required',
-                    'integer',
-                    Rule::unique('vagas')->where(function ($query) use ($request) {
-                        return $query->where('id_estacionamento', $request->id_estacionamento);
-                    }),
-                ],
-                'tipo' => 'required'
-            ]);
-
             $vaga = Vaga::create([
                 'id_estacionamento' => $request->id_estacionamento,
                 'numero' => $request->numero,
@@ -72,11 +60,9 @@ class VagaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Vaga $vaga)
     {
         try {
-            $vaga = Vaga::findOrFail($id);
-
             return response()->json(['vaga' => $vaga], 200);
         } catch (\Throwable $th) {
             return response()->json([
@@ -89,17 +75,9 @@ class VagaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(VagaUpdateRequest $request, Vaga $vaga)
     {
         try {
-            $vaga = Vaga::findOrFail($id);
-
-            $request->validate([
-                'id_estacionamento' => 'sometimes|integer',
-                'numero' => 'sometimes|integer',
-                'tipo' => 'sometimes|required'
-            ]);
-
             $vaga->update([
                 'id_estacionamento' => $request->id_estacionamento ?? $vaga->id_estacionamento,
                 'numero' => $request->numero ?? $vaga->numero,
@@ -129,10 +107,10 @@ class VagaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Vaga $vaga)
     {
         try {
-            Vaga::destroy($id);
+            $vaga->delete();
 
             return response()->json(['message' => 'Vaga excluída com sucesso!'], 200);
         } catch (\Throwable $th) {
