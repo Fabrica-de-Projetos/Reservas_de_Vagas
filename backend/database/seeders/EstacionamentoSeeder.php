@@ -22,7 +22,8 @@ class EstacionamentoSeeder extends Seeder
                 'cep' => '182349-987',
                 'cidade' => 'Marília',
                 'estado' => 'SP',
-                'total_vagas' => $i * 5
+                'total_vagas' => $i * 5,
+                'imagem' => 'estacionamentos/img-padrao.jpg'
             ]);
         }
     }

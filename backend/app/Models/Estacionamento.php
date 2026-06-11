@@ -14,7 +14,8 @@ class Estacionamento extends Model
         'cep',
         'cidade',
         'estado',
-        'total_vagas'
+        'total_vagas',
+        'imagem'
     ];
 
     protected $with = ['vagas'];

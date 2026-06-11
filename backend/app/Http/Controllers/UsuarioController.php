@@ -46,11 +46,6 @@ class UsuarioController extends Controller
                 'message' => 'Usuário criado com sucesso'
             ], 201);
 
-        } catch (ValidationException $e) { // se der um erro do tipo "ValidationException" cai nesse catch
-            return response()->json([
-                'message' => 'Erro de validação.',
-                'errors' => $e->getMessage()
-            ], 422);
         } catch (\Throwable $e) { // qualquer outro tipo de erro, exceção no try que implemente a interface "Throwable" cai aqui
             return response()->json([
                 'message' => 'Erro interno no servidor.',
@@ -93,11 +88,6 @@ class UsuarioController extends Controller
                 'message' => 'Usuário atualizado com sucesso!',
                 'usuario' => $usuario
             ], 200);
-        } catch (ValidationException $e) {
-            return response()->json([
-                'message' => 'Erro de validação.',
-                'errors' => $e->getMessage()
-            ], 422);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Erro interno no servidor.',

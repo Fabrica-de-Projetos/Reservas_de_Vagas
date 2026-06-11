@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('cidade', 50);
             $table->string('estado', 2);
             $table->integer('total_vagas');
+            $table->string('imagem');
             $table->timestamps();
         });
     }

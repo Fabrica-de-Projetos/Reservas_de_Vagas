@@ -44,11 +44,6 @@ class VagaController extends Controller
                 'message' => 'Vaga criada com sucesso!',
                 'vaga' => $vaga
             ], 201);
-        } catch (ValidationException $e) {
-            return response()->json([
-                'message' => 'Erro de validação.',
-                'errors' => $e->getMessage()
-            ], 422);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Erro interno no servidor.',
@@ -91,11 +86,6 @@ class VagaController extends Controller
                 ],
                 200
             );
-        } catch (ValidationException $e) {
-            return response()->json([
-                'message' => 'Erro de validação',
-                'errors' => $e->getMessage()
-            ], 422);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Erro interno no servidor',

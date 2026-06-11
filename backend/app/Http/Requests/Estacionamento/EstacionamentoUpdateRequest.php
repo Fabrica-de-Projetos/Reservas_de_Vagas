@@ -30,7 +30,8 @@ class EstacionamentoUpdateRequest extends FormRequest
             'cep' => ['sometimes', 'string', 'max:8'],
             'cidade' => ['sometimes', 'string', 'max:50'],
             'estado' => ['sometimes', 'string', 'max:2'],
-            'total_vagas' => ['sometimes', 'integer']
+            'total_vagas' => ['sometimes', 'integer'],
+            'imagem' => ['sometimes', 'image', 'mimes:jpg,png,webp', 'max:2048']
         ];
     }
 }

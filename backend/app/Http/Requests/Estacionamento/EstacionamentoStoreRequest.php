@@ -29,7 +29,8 @@ class EstacionamentoStoreRequest extends FormRequest
             'bairro' => ['required', 'string', 'max:100'],
             'cep' => ['required', 'string', 'max:8'],
             'cidade' => ['required', 'string', 'max:50'],
-            'total_vagas' => ['required', 'integer']
+            'total_vagas' => ['required', 'integer'],
+            'imagem' => ['required', 'image', 'mimes:jpg,png,webp', 'max:2048']
         ];
     }
 }

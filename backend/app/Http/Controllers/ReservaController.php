@@ -110,11 +110,6 @@ class ReservaController extends Controller
                 'message' => 'Reserva realizada com sucesso!',
                 'reserva' => $reserva
             ], 201);
-        } catch (ValidationException $e) {
-            return response()->json([
-                'message' => 'Erro de validação.',
-                'errors' => $e->getMessage()
-            ], 422);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Erro interno no servidor',
@@ -156,11 +151,6 @@ class ReservaController extends Controller
                 'message' => 'Reserva atualizada com sucesso.',
                 'reserva' => $reserva
             ], 200);
-        } catch (ValidationException $e) {
-            return response()->json([
-                'message' => 'Erro de validação.',
-                'errors' => $e->getMessage()
-            ], 422);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Erro interno no servidor',

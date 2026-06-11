@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Estacionamento;
-use Illuminate\Http\Request;
 use App\Http\Requests\Estacionamento\{EstacionamentoStoreRequest, EstacionamentoUpdateRequest};
-use Illuminate\Validation\ValidationException;
 
 class EstacionamentoController extends Controller
 {
@@ -34,6 +32,8 @@ class EstacionamentoController extends Controller
     public function store(EstacionamentoStoreRequest $request)
     {
         try {
+            $caminho = $request->file('imagem')->store('estacionamentos', 'public');
+
             $estacionamento = Estacionamento::create([
                 'nome' => $request->nome,
                 'rua' => $request->rua,
@@ -42,18 +42,14 @@ class EstacionamentoController extends Controller
                 'cep' => $request->cep,
                 'cidade' => $request->cidade,
                 'estado' => $request->estado,
-                'total_vagas' => $request->total_vagas
+                'total_vagas' => $request->total_vagas,
+                'imagem' => $caminho
             ]);
 
             return response()->json([
                 'message' => 'Estacionamento criado com sucesso!',
                 'estacionamento' => $estacionamento
             ], 201);
-        } catch (ValidationException $e) {
-            return response()->json([
-                'message' => 'Erro de validação.',
-                'errors' => $e->getMessage()
-            ], 422);
         } catch (\Throwable $e) {
             return response()->json([
                 'message' => 'Erro interno no servidor.',
@@ -93,18 +89,14 @@ class EstacionamentoController extends Controller
                 'cep' => $request->cep ?? $estacionamento->cep,
                 'cidade' => $request->cidade ?? $estacionamento->cidade,
                 'estado' => $request->estado ?? $estacionamento->estado,
-                'total_vagas' => $request->total_vagas ?? $estacionamento->total_vagas
+                'total_vagas' => $request->total_vagas ?? $estacionamento->total_vagas,
+                'imagem' => $request->hasFile('imagem') ? $request->file('imagem')->store('estacionamentos', 'public') : $estacionamento->imagem
             ]);
 
             return response()->json([
                 'message' => 'Estacionamento atualizado com sucesso!',
                 'estacionamento' => $estacionamento
             ], 200);
-        } catch (ValidationException $e) {
-            return response()->json([
-                'message' => 'Erro de validação.',
-                'errors' => $e->getMessage()
-            ], 422);
         } catch (\Throwable $e) {
             return response()->json([
                 'message' => 'Erro interno no servidor.',
