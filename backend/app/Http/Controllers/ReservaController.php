@@ -11,7 +11,6 @@ use App\Models\{
     Veiculo
 };
 use Carbon\Carbon;
-use Nette\Schema\ValidationException;
 
 class ReservaController extends Controller
 {

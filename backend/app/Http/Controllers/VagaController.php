@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Vaga;
 use App\Http\Requests\Vaga\{VagaStoreRequest, VagaUpdateRequest};
-use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 
 class VagaController extends Controller
 {
