@@ -21,6 +21,9 @@ export default {
       router: useRouter()
     }
   },
+  mounted(){
+    this.BuscarUsuario()
+  },
   methods: {
 
     ValidarEmail(valor: string) {
@@ -51,7 +54,7 @@ export default {
       return this.validacaoSenha
     },
 
-    async ChamadaAPI() {
+    async ValidarUsuario() {
 
       this.jsonRequisicao = JSON.stringify({
         email: this.email,
@@ -72,6 +75,24 @@ export default {
       return respostaApi
     },
 
+    async BuscarUsuario() {
+
+      const respostaApi = fetch("https://backend-oh40.onrender.com/api/spotLivre/userativo",
+        {
+          headers: {
+            "Authorization": `Bearer ${localStorage.getItem("TokenAuth")}`,
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          }
+        }
+      )
+      .then(resposta => {
+        return resposta.json()
+      })
+
+      return respostaApi
+    },
+
     async RequisicaoLogin() {
 
       if (!this.ValidarEmail(this.email)) {
@@ -82,9 +103,13 @@ export default {
         return
       }
 
-      const respostaApi = await this.ChamadaAPI()
-      localStorage.setItem("TokenAuth", respostaApi.token)
-      this.router.push("/vagas")
+      const respostaValidacao = await this.ValidarUsuario()
+      const respostaDados = await this.BuscarUsuario()
+
+      localStorage.setItem("TokenAuth", respostaValidacao.token)
+      localStorage.setItem("NomeUsuario", respostaDados.usuario.nome)
+      localStorage.setItem("EmailUsuario", respostaDados.usuario.email)
+      this.router.push("/home")
     }
   }
 }

@@ -1,13 +1,19 @@
-<script>
+<script lang="ts">
 import { ref } from 'vue'
 import ParkingCard from '@/components/ParkingCard.vue'
 import StatsCard from '@/components/StatsCard.vue'
+import { verificarToken } from '@/utils/verificarToken';
+import HeaderComponent from '@/components/HeaderComponent.vue';
 
 export default {
   name: 'HomeView',
   components: {
     ParkingCard,
-    StatsCard
+    StatsCard,
+    HeaderComponent
+  },
+  mounted() {
+    verificarToken()
   },
   setup() {
     const busca = ref('')
@@ -27,7 +33,7 @@ export default {
   <div class="home-wrapper">
 
     <!-- navbar -->
-    <header class="navbar">
+    <!-- <header class="navbar">
       <div class="logo-spot-livre">
         <img class="logo-dsin" src="/img/dsin-logo.png" alt="Dsin Logo" />
         <p class="spot-livre-spot">
@@ -40,7 +46,9 @@ export default {
         </div>
         <span class="usuario-nome">User</span>
       </div>
-    </header>
+    </header> -->
+
+    <HeaderComponent/>
 
     <!-- hero banner -->
     <section class="hero-banner">

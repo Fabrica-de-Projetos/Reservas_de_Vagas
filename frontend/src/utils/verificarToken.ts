@@ -10,6 +10,6 @@ export function verificarToken()
     }
     else
     {
-        router.push("/vagas")
+        router.push("/home")
     }
 }

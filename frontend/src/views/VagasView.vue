@@ -15,7 +15,7 @@ export default {
       vagasPiso1: Array.from({ length: 10 }, (_, i) => ({id: i + 1, status: 'Disponível'})),
       vagasPiso2: Array.from({ length: 10 }, (_, i) => ({id: i + 11,status: 'Disponível'})),
     }
-  },
+  }, 
   mounted() {
     verificarToken()
     this.ListarVagas()
