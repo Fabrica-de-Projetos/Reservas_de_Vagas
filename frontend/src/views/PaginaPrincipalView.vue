@@ -2,12 +2,14 @@
 import { ref } from 'vue'
 import ParkingCard from '@/components/ParkingCard.vue'
 import StatsCard from '@/components/StatsCard.vue'
+import CarrosselEstacionamentos from '@/components/CarrosselEstacionamentos.vue';
 
 export default {
   name: 'HomeView',
   components: {
     ParkingCard,
-    StatsCard
+    StatsCard,
+    CarrosselEstacionamentos
   },
   setup() {
     const busca = ref('')
@@ -57,7 +59,7 @@ export default {
 
       <!-- MAPA -->
       <section class="secao-mapa">
-        <div class="mapa-placeholder"></div>
+        <CarrosselEstacionamentos />
       </section>
 
       <!-- estacionamento -->
