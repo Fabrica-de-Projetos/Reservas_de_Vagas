@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{UsuarioController, EstacionamentoController, ReservaController, VagaController, VeiculoController, LoginController};
-/* 
+use App\Http\Controllers\{UsuarioController, EstacionamentoController, ReservaController, VagaController, VeiculoController, LoginController,UserAtivoController};
+/*
 ! observação importante: rotas ganham prefixo de "/api" por estarem neste arquivo de api, logo, um exemplo de rota correta (por exemplo, para usuarios) aplicando este prefixo api sem o uso do domínio (http://localhostEvariados) seria: /api/spotLivre/usuarios (utilizadno verbo GET irá me retornar todos os usuários do sistema) e exemplo de rota completa: http://localhost/api/spotLivre/usuarios (verbo get aqui para retornar todos os usuários)
 */
 
@@ -20,6 +20,8 @@ Route::middleware('auth:sanctum')->Resource("/spotLivre/veiculos", VeiculoContro
 Route::get("/spotLivre/reservas/horarios-disponiveis/{id}", [ReservaController::class, 'horariosDisponiveis']);
 Route::post("/spotLivre/reservas/reservar/{usuario}/{veiculo}/{vaga}", [ReservaController::class, 'reservar']);
 Route::patch("/spotLivre/reservas/atualizar/{reserva}", [ReservaController::class, 'atualizar']);
+
+Route::middleware('auth:sanctum')->get("/spotLivre/userativo", [UserAtivoController::class, 'UserAtivo']);
 
 Route::get('/health', function () {
     return response()->json([
