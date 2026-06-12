@@ -1,11 +1,10 @@
-import { useRouter } from 'vue-router';
+import { navegar } from './navegar';
 
 export function verificarToken()
 {
-  const router = useRouter()
 
     if (localStorage.getItem("TokenAuth") == null) {
         alert("Acesso não autorizado")
-        router.push("/cadastro")
+        navegar("/cadastro")
     }
 }
