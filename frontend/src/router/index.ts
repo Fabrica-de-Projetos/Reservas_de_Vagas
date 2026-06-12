@@ -3,6 +3,7 @@ import HomeView from '@/views/HomeView.vue'
 import CadastroView from '@/views/CadastroView.vue'
 import LoginView from '@/views/LoginView.vue'
 import VagasView from '@/views/VagasView.vue'
+import PaginaPrincipalView from '@/views/PaginaPrincipalView.vue'
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -27,6 +28,11 @@ const router = createRouter({
       name: 'vagas',
       component: VagasView,
     },
+    {
+      path: '/home',
+      name: 'homeprincipal',
+      component: PaginaPrincipalView,
+    }
   ],
 })
 
