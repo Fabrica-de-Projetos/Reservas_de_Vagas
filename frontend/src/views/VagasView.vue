@@ -13,26 +13,33 @@ export default {
     return {
       counterVagas: Number,
       exibirModal: false,
-      vagas: Object,
-      vagasPiso1: Array.from({ length: 10 }, (_, i) => ({id: i + 1, status: 'Disponível'})),
-      vagasPiso2: Array.from({ length: 10 }, (_, i) => ({id: i + 11,status: 'Disponível'})),
+      dadosEstacionamento: {
+        estacionamento: {
+          vagas: []
+        }
+      },
+      estacionamentoId: this.$route.params.id
     }
   },
   mounted() {
     verificarToken()
-    this.ListarVagas()
+    this.BuscarDadosEstacionamento()
   },
   methods: {
 
-    async ListarVagas()
+    async BuscarDadosEstacionamento()
     {
-      const respostaApi = await fetch("https://backend-oh40.onrender.com/api/spotLivre/vagas")
+      const respostaApi = await fetch(`https://backend-oh40.onrender.com/api/spotLivre/estacionamentos/${this.estacionamentoId}`)
       .then(resposta => {
         return resposta.json()
       })
-      this.vagas = respostaApi
-      console.log(this.vagas)
-      return this.vagas
+      this.dadosEstacionamento = respostaApi
+      return this.dadosEstacionamento
+    },
+
+    exibir()
+    {
+      console.log(this.dadosEstacionamento)
     }
   }
 }
@@ -46,17 +53,17 @@ export default {
     <section class="info-estacionamento">
       <img src="/img/dsin-logo.png" alt="Logo" class="logo-hero" />
       <p class="logo-hero-texto"><span class="spot">Spot</span><span class="livre">Livre</span></p>
-      <h1>Nome estacionamento</h1>
+      <h1>{{ dadosEstacionamento.estacionamento.nome }}</h1>
       <div class="cards-info">
         <div class="card-info">
           <img src="/img/icones/carro.png" alt="Carro" class="icone-card" />
           <p class="card-label">Capacidade</p>
-          <p class="card-valor">20</p>
+          <p class="card-valor">{{dadosEstacionamento.estacionamento.total_vagas}}</p>
         </div>
         <div class="card-info">
           <img src="/img/icones/carro.png" alt="Carro" class="icone-card" />
           <p class="card-label">Vagas disponíves</p>
-          <p class="card-valor">20</p>
+          <p class="card-valor">{{dadosEstacionamento.estacionamento.total_vagas}}</p>
         </div>
       </div>
     </section>
@@ -66,15 +73,13 @@ export default {
       <h2 class="titulo-piso">Piso 2</h2>
       <div class="piso">
         <div class="container-cards">
-          <template v-for="array in vagas" :key="array.id">
-            <div v-for="vaga in array" :key="vaga.id">
               <CardVaga
+              v-for="vaga in dadosEstacionamento.estacionamento.vagas"
+              :key="vaga.id"
               :numero = "vaga.numero"
               :tipo = "vaga.tipo"
               :vagaId = "vaga.id"
               imagem="https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2026/05/Neymar-Raphinha-Selecao-e1779992588361.webp?w=884"/>
-            </div>
-          </template>
         </div>
       </div>
     </section>
