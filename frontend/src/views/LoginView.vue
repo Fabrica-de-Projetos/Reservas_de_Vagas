@@ -1,6 +1,8 @@
 <script lang="ts">
 import FormBase from '@/components/FormBase.vue';
 import InputDefault from '@/components/InputDefault.vue';
+import { navegar } from '@/utils/navegar';
+import { redirecionarAutenticado } from '@/utils/redirecionarAutenticado';
 import { useRouter } from 'vue-router';
 
 export default {
@@ -18,98 +20,109 @@ export default {
       validacaoEmail: true,
       validacaoSenha: true,
       regexEmail: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-      router: useRouter()
+      router: useRouter(),
+      toast: {
+        visivel: false,
+        mensagem: "",
+        tipo: "sucesso" as "sucesso" | "erro" | "carregando"
+      }
     }
   },
-  mounted(){
+  mounted() {
+    redirecionarAutenticado()
     this.BuscarUsuario()
   },
   methods: {
 
+    mostrarToast(mensagem: string, tipo: "sucesso" | "erro" | "carregando", duracao = 3500) {
+      this.toast.mensagem = mensagem
+      this.toast.tipo = tipo
+      this.toast.visivel = true
+
+      if (tipo !== "carregando") {
+        setTimeout(() => {
+          this.toast.visivel = false
+        }, duracao)
+      }
+    },
+
+    fecharToast() {
+      this.toast.visivel = false
+    },
+
     ValidarEmail(valor: string) {
-
       if (valor.length === 0) {
-        this.validacaoMensagem = "O email deve ser preenchido";
+        this.validacaoMensagem = "O email deve ser preenchido"
         this.validacaoEmail = false
-        return this.validacaoEmail
-      }
-      else if (!this.regexEmail.test(valor)) {
-        this.validacaoMensagem = "Email inválido";
+        return false
+      } else if (!this.regexEmail.test(valor)) {
+        this.validacaoMensagem = "Email inválido"
         this.validacaoEmail = false
-        return this.validacaoEmail
+        return false
       }
-
       this.validacaoEmail = true
-      return this.validacaoEmail
+      return true
     },
 
     ValidarSenha(valor: string) {
       if (valor.length === 0) {
-        this.validacaoMensagem = 'A senha deve ser informada'
+        this.validacaoMensagem = "A senha deve ser informada"
         this.validacaoSenha = false
-        return this.validacaoSenha
+        return false
       }
-
       this.validacaoSenha = true
-      return this.validacaoSenha
+      return true
     },
 
     async ValidarUsuario() {
-
       this.jsonRequisicao = JSON.stringify({
         email: this.email,
         senha: this.senha
       })
 
-      const respostaApi = fetch("https://backend-oh40.onrender.com/api/spotLivre/login", {
+      const response = await fetch("https://backend-oh40.onrender.com/api/spotLivre/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: this.jsonRequisicao
       })
-        .then(response => {
-          return response.json()
-        })
 
-      return respostaApi
+      if (response.status === 200) return response.json()
+      if (response.status === 401) throw new Error("Email ou senha incorretos.")
+      throw new Error("Erro ao tentar fazer login. Tente novamente.")
     },
 
     async BuscarUsuario() {
-
-      const respostaApi = fetch("https://backend-oh40.onrender.com/api/spotLivre/userativo",
-        {
-          headers: {
-            "Authorization": `Bearer ${localStorage.getItem("TokenAuth")}`,
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-          }
+      const resposta = await fetch("https://backend-oh40.onrender.com/api/spotLivre/userativo", {
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem("TokenAuth")}`,
+          "Accept": "application/json",
+          "Content-Type": "application/json"
         }
-      )
-      .then(resposta => {
-        return resposta.json()
       })
-
-      return respostaApi
+      return resposta.json()
     },
 
     async RequisicaoLogin() {
+      if (!this.ValidarEmail(this.email)) return
+      if (!this.ValidarSenha(this.senha)) return
 
-      if (!this.ValidarEmail(this.email)) {
-        return
+      this.mostrarToast("Processando...", "carregando")
+
+      try {
+        const respostaValidacao = await this.ValidarUsuario()
+        localStorage.setItem("TokenAuth", respostaValidacao.token)
+
+        const respostaDados = await this.BuscarUsuario()
+        localStorage.setItem("NomeUsuario", respostaDados.usuario.nome)
+        localStorage.setItem("EmailUsuario", respostaDados.usuario.email)
+
+        this.mostrarToast("Login realizado com sucesso!", "sucesso")
+
+        setTimeout(() => navegar("/home"), 1500)
+
+      } catch (erro: any) {
+        this.mostrarToast(erro.message ?? "Ocorreu um erro inesperado.", "erro")
       }
-
-      if (!this.ValidarSenha(this.senha)) {
-        return
-      }
-
-      const respostaValidacao = await this.ValidarUsuario()
-      const respostaDados = await this.BuscarUsuario()
-
-      localStorage.setItem("TokenAuth", respostaValidacao.token)
-      localStorage.setItem("NomeUsuario", respostaDados.usuario.nome)
-      localStorage.setItem("EmailUsuario", respostaDados.usuario.email)
-      this.router.push("/home")
     }
   }
 }
@@ -117,6 +130,16 @@ export default {
 
 <template>
   <main>
+    <Transition name="toast">
+      <div v-if="toast.visivel" class="toast" :class="toast.tipo">
+
+        <span v-if="toast.tipo === 'carregando'" class="spinner"></span>
+        <span v-else class="toast-icone">{{ toast.tipo === 'sucesso' ? '✓' : '✕' }}</span>
+
+        <span class="toast-mensagem">{{ toast.mensagem }}</span>
+      </div>
+    </Transition>
+
     <div class="container">
       <section class="sessao-apresentacao mb_view">
         <div class="logo-spot-livre">
@@ -141,19 +164,22 @@ export default {
               <h1 class="titulo-apresentacao">Seja bem vindo!</h1>
               <h3 class="mensagem-apresentacao">Chegou, registrou, estacionou</h3>
             </section>
-
             <img src="/img/banner.svg" alt="Banner" class="banner_car" />
           </div>
           <div>
             <FormBase>
               <InputDefault v-model="email" title="Email" type="text" input-icon="/img/icones/email.png"
                 :required="true" :validated="validacaoEmail" :error-message="validacaoMensagem" />
-
               <InputDefault v-model="senha" title="Senha" type="password" input-icon="/img/icones/senha.png"
                 :required="true" :validated="validacaoSenha" :error-message="validacaoMensagem" />
-
               <div class="centralizar">
-                <button @click="RequisicaoLogin" type="button" style="margin-top: 30px" class="botao-modelo-principal">
+                <button
+                  @click="RequisicaoLogin"
+                  type="button"
+                  style="margin-top: 30px"
+                  class="botao-modelo-principal"
+                  :disabled="toast.tipo === 'carregando' && toast.visivel"
+                >
                   Entrar
                 </button>
               </div>
@@ -173,6 +199,76 @@ export default {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+.toast {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+  max-width: 320px;
+}
+
+.toast.sucesso {
+  background-color: #1a7a4a;
+  color: #d4f5e2;
+  border: 1px solid #2dba73;
+}
+
+.toast.erro {
+  background-color: #7a1a1a;
+  color: #fdd;
+  border: 1px solid #e05555;
+}
+
+.toast.carregando {
+  background-color: #1a3a5c;
+  color: #cce4ff;
+  border: 1px solid #3a8fd4;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #cce4ff;
+  border-radius: 50%;
+  flex-shrink: 0;
+  animation: girar 0.7s linear infinite;
+}
+
+@keyframes girar {
+  to { transform: rotate(360deg); }
+}
+
+.toast-icone {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.toast-enter-active,
+.toast-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.toast-enter-from,
+.toast-leave-to {
+  opacity: 0;
+  transform: translateX(40px);
+}
+
+.botao-modelo-principal:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
 
 main {
   min-height: 100vh;
@@ -216,7 +312,7 @@ main {
   transition: all 0.3s ease;
 }
 
-.botao-modelo-principal:hover {
+.botao-modelo-principal:hover:not(:disabled) {
   box-shadow: 0px 1px 30px 10px #ffd90266;
 }
 
@@ -279,9 +375,7 @@ main {
   max-width: 45vw;
 }
 
-.mb_view {
-  display: none;
-}
+.mb_view { display: none; }
 
 .pc_view {
   display: flex;
@@ -291,7 +385,6 @@ main {
 }
 
 @media (max-width: 1000px) {
-
   .background-card {
     display: flex;
     justify-content: center;
@@ -300,17 +393,20 @@ main {
     gap: 70px;
   }
 
-  .pc_view {
-    display: none;
-  }
-
-  .mb_view {
-    display: flex;
-  }
+  .pc_view { display: none; }
+  .mb_view { display: flex; }
 
   .botao-modelo-principal {
     width: 100%;
     border-radius: 50px;
+  }
+
+  .toast {
+    top: auto;
+    bottom: 24px;
+    right: 16px;
+    left: 16px;
+    max-width: unset;
   }
 }
 </style>
