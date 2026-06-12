@@ -30,64 +30,6 @@ export default {
         console.log(this.horarios)
         return this.horarios
     },
-
-    async FazerReserva()
-      {
-        if (!this.horarioSelecionado) {
-          alert("Selecione um horário")
-          return
-        }
-
-        const hoje = new Date()
-
-        const [hora, minuto] = this.horarioSelecionado
-          .split(":")
-          .map(Number)
-
-        const dataInicio = new Date(hoje)
-        dataInicio.setHours(hora, minuto, 0, 0)
-
-        const dataFim = new Date(dataInicio)
-        dataFim.setMinutes(dataFim.getMinutes() + 90)
-
-        const formatarData = (data: Date) => {
-          const ano = data.getFullYear()
-          const mes = String(data.getMonth() + 1).padStart(2, "0")
-          const dia = String(data.getDate()).padStart(2, "0")
-          const hora = String(data.getHours()).padStart(2, "0")
-          const minuto = String(data.getMinutes()).padStart(2, "0")
-          const segundo = String(data.getSeconds()).padStart(2, "0")
-
-          return `${ano}-${mes}-${dia} ${hora}:${minuto}:${segundo}`
-        }
-
-        const body = JSON.stringify({
-          data_inicio: formatarData(dataInicio),
-          data_fim: formatarData(dataFim)
-        })
-
-        const resposta = await fetch(
-          `https://backend-oh40.onrender.com/api/spotLivre/reservas/reservar/${this.idUsuario}/${this.idVeiculo}/${this.idVaga}`,
-          {
-            method: "POST",
-            headers: {
-              "Authorization": `Bearer ${localStorage.getItem("TokenAuth")}`,
-              "Accept": "application/json",
-              "Content-Type": "application/json"
-            },
-            body
-          }
-        )
-
-        const dados = await resposta.json()
-
-        console.log(dados)
-
-        if (resposta.ok) {
-          alert("Reserva realizada com sucesso!")
-          this.$emit("fechar")
-        }
-      },
     async BuscarIdUsuario() {
       const resposta = await fetch("https://backend-oh40.onrender.com/api/spotLivre/userativo", {
         headers: {
@@ -103,7 +45,6 @@ export default {
   },
   emits: ["fechar"]
 }
-
 </script>
 <template>
   <div v-if="exibir" class="modal-overlay">
