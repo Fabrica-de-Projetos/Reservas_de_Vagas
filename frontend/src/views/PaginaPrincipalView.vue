@@ -67,7 +67,7 @@ export default {
 
       <!-- MAPA -->
       <section class="secao-mapa">
-        <div class="mapa-placeholder"></div>
+        <CarrosselEstacionamentos />
       </section>
 
       <!-- estacionamento -->
