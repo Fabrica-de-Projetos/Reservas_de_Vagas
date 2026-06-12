@@ -50,20 +50,30 @@ export default {
 
     <HeaderComponent/>
 
-    <section class="info-estacionamento">
-      <img src="/img/dsin-logo.png" alt="Logo" class="logo-hero" />
-      <p class="logo-hero-texto"><span class="spot">Spot</span><span class="livre">Livre</span></p>
-      <h1>{{ dadosEstacionamento.estacionamento.nome }}</h1>
-      <div class="cards-info">
-        <div class="card-info">
-          <img src="/img/icones/carro.png" alt="Carro" class="icone-card" />
-          <p class="card-label">Capacidade</p>
-          <p class="card-valor">{{dadosEstacionamento.estacionamento.total_vagas}}</p>
+    <section class="container-estacionamento">
+      <div>
+        <span style="color: #ffc000;">Estacionamento</span>
+        <h1>{{ dadosEstacionamento.estacionamento.nome }}</h1>
+        <div class="container-rua">
+          <img style="width: 1.5rem;" src="../assets/icons/localizacao.png" alt="">
+          <span style="color: white;">{{ dadosEstacionamento.estacionamento.rua }}</span>
         </div>
-        <div class="card-info">
-          <img src="/img/icones/carro.png" alt="Carro" class="icone-card" />
-          <p class="card-label">Vagas disponíves</p>
-          <p class="card-valor">{{dadosEstacionamento.estacionamento.total_vagas}}</p>
+      </div>
+
+      <div class="container-info">
+        <div class="cards-info">
+          <div style="width: 50%;" class="card-info">
+            <img src="/img/icones/carro.png" alt="Carro" class="icone-card" />
+            <p class="card-label">Capacidade</p>
+            <p class="card-valor">{{dadosEstacionamento.estacionamento.total_vagas}}</p>
+          </div>
+          <div style="width: 50%;" class="card-info">
+            <img src="/img/icones/carro.png" alt="Carro" class="icone-card" />
+            <p class="card-label">Vagas disponíves</p>
+            <p class="card-valor">{{dadosEstacionamento.estacionamento.total_vagas}}</p>
+          </div>
+          <div class="container-imagem">
+          </div>
         </div>
       </div>
     </section>
@@ -83,7 +93,6 @@ export default {
         </div>
       </div>
     </section>
-
   </div>
 </template>
 
@@ -152,29 +161,35 @@ export default {
   opacity: 0.8;
 }
 
-.info-estacionamento {
-  background-image: url('/img/Background home.png');
-  background-size: cover;
-  background-position: center;
+.container-estacionamento {
+  background-repeat: no-repeat;
+  margin-top: 100px;
+  margin-left: 50px;
+  margin-right: 50px;
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 12px;
   position: relative;
-  text-align: center;
-  padding: 80px 20px 50px;
+  padding: 40px 30px ;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  flex-direction: row;
   align-items: center;
   gap: 8px;
 }
 
-.info-estacionamento::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.65);
+.container-rua{
+  display: flex;
+  align-items: center;
+  background-color: #222222;
+  padding: 15px;
+  border: 1px solid #333;
+  border-radius: 12px;
 }
 
 .logo-hero,
 .logo-hero-texto,
-.info-estacionamento h1,
+.container-estacionamento h1,
 .cards-info {
   position: relative;
 }
@@ -189,17 +204,21 @@ export default {
   margin: 0;
 }
 
-.info-estacionamento h1 {
+.container-estacionamento h1 {
   font-size: 26px;
   font-weight: 700;
   margin: 8px 0 20px;
+}
+
+.container-info{
+  display: flex;
+  flex-direction: row;
 }
 
 .cards-info {
   display: flex;
   gap: 20px;
   justify-content: center;
-  flex-wrap: wrap;
 }
 
 .card-info {
@@ -210,6 +229,10 @@ export default {
   min-width: 160px;
   backdrop-filter: blur(4px);
   text-align: center;
+}
+
+.container-imagem{
+  width: 50%;
 }
 
 .icone-card {
