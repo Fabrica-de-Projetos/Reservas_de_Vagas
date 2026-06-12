@@ -4,6 +4,7 @@ import ParkingCard from '@/components/ParkingCard.vue'
 import StatsCard from '@/components/StatsCard.vue'
 import { verificarToken } from '@/utils/verificarToken';
 import HeaderComponent from '@/components/HeaderComponent.vue';
+import CarrosselEstacionamentos from '@/components/CarrosselEstacionamentos.vue';
 
 export default {
   name: 'HomeView',
@@ -15,7 +16,8 @@ export default {
   components: {
     ParkingCard,
     StatsCard,
-    HeaderComponent
+    HeaderComponent,
+    CarrosselEstacionamentos
   },
   mounted() {
     verificarToken()
