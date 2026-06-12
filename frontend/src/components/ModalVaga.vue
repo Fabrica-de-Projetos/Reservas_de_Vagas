@@ -4,15 +4,19 @@ export default {
   props: {
     imagem: String,
     exibir: Boolean,
-    idVaga: Number
+    idVaga: Number,
   },
   data() {
     return{
-      horarios: []
+      horarios: [],
+      horarioSelecionado: "",
+      idUsuario: 0,
+      idVeiculo: 2,
     }
   },
   mounted() {
     this.BuscarHorarios(this.idVaga!)
+    this.BuscarIdUsuario()
   },
   methods: {
     async BuscarHorarios(idVaga: number)
@@ -25,7 +29,77 @@ export default {
         this.horarios = respostApi
         console.log(this.horarios)
         return this.horarios
-      }
+    },
+
+    async FazerReserva()
+      {
+        if (!this.horarioSelecionado) {
+          alert("Selecione um horário")
+          return
+        }
+
+        const hoje = new Date()
+
+        const [hora, minuto] = this.horarioSelecionado
+          .split(":")
+          .map(Number)
+
+        const dataInicio = new Date(hoje)
+        dataInicio.setHours(hora, minuto, 0, 0)
+
+        const dataFim = new Date(dataInicio)
+        dataFim.setMinutes(dataFim.getMinutes() + 90)
+
+        const formatarData = (data: Date) => {
+          const ano = data.getFullYear()
+          const mes = String(data.getMonth() + 1).padStart(2, "0")
+          const dia = String(data.getDate()).padStart(2, "0")
+          const hora = String(data.getHours()).padStart(2, "0")
+          const minuto = String(data.getMinutes()).padStart(2, "0")
+          const segundo = String(data.getSeconds()).padStart(2, "0")
+
+          return `${ano}-${mes}-${dia} ${hora}:${minuto}:${segundo}`
+        }
+
+        const body = JSON.stringify({
+          data_inicio: formatarData(dataInicio),
+          data_fim: formatarData(dataFim)
+        })
+
+        const resposta = await fetch(
+          `https://backend-oh40.onrender.com/api/spotLivre/reservas/reservar/${this.idUsuario}/${this.idVeiculo}/${this.idVaga}`,
+          {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${localStorage.getItem("TokenAuth")}`,
+              "Accept": "application/json",
+              "Content-Type": "application/json"
+            },
+            body
+          }
+        )
+
+        const dados = await resposta.json()
+
+        console.log(dados)
+
+        if (resposta.ok) {
+          alert("Reserva realizada com sucesso!")
+          this.$emit("fechar")
+        }
+      },
+    async BuscarIdUsuario() {
+      const resposta = await fetch("https://backend-oh40.onrender.com/api/spotLivre/userativo", {
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem("TokenAuth")}`,
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+        }
+      })
+      const dadosUsuario = await resposta.json()
+      console.log(dadosUsuario)
+      this.idUsuario = dadosUsuario.usuario.id
+    },
   },
   emits: ["fechar"]
 }
@@ -52,8 +126,7 @@ export default {
         </p>
         <div class="tempo-grid">
           <template v-for="lista in horarios" :key="lista">
-            <button v-for="horario in lista" :key="horario" class="tempo-button">
-            <!-- <img class="icon" src="/img/icones/relogio.png"> -->
+            <button v-for="horario in lista" :key="horario" class="tempo-button" @click="horarioSelecionado = horario">
               {{ horario }}
             </button>
           </template>
@@ -84,14 +157,18 @@ export default {
             </div>
           </div>
         </div>
-        <div class="security-box">
-          <!-- <img class="icon" src="/img/icones/escudo.png"> Reserva 100% segura e confirmada na hora. -->
+        <div class="confirmar-box">
+          <p class="label">
+            Horario selecionado
+          </p>
+          <h3 class="value amarelo-text">
+            {{horarioSelecionado ? horarioSelecionado : "Nenhum"}}
+          </h3>
         </div>
-        <button class="reserve-button">
-          <!-- <img style="width: 2rem;" src="/img/icones/simbolo-do-calendario.png"> Reservar agora -->
+        <button class="reserve-button" @click="FazerReserva">
+          Confirmar Reserva
         </button>
         <p class="footer-text">
-          <!-- <img class="icon" src="/img/icones/cadeado.png"> -->
           Seus dados estão protegidos
         </p>
       </div>
@@ -294,8 +371,9 @@ export default {
   color: #FFC400;
 }
 
-.security-box{
+.confirmar-box{
   display: flex;
+  flex-direction: column;
   gap: 10px;
   margin-top: 24px;
   padding: 20px;
@@ -398,5 +476,4 @@ export default {
     margin-top: 34px;
   }
 }
-
 </style>
