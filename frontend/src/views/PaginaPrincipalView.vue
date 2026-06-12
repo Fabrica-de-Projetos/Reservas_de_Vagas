@@ -98,17 +98,7 @@ export default {
       <section class="secao-vagas">
         <h2 class="secao-titulo-branco">Vagas disponíveis</h2>
         <div class="cards-grid">
-          <ParkingCard imagem="/img/estacionamentos/confianca-estacionamento.jpg" nome="Estacionamento confiança"
-            localizacao="R. das Roseiras, 233" :avaliacao="5.0" :vagas="25" />
-          <ParkingCard imagem="/img/estacionamentos/dsin-estacionamento.jpg" nome="Estacionamento DSIN"
-            localizacao="R. Eugênio Pessine, 73" :avaliacao="5.0" :vagas="15" />
-          <ParkingCard imagem="" nome="Nome do Estacionamento" localizacao="Localização" :avaliacao="4.5" :vagas="8" />
-          <ParkingCard nome="Nome do Estacionamento" localizacao="Localização" :avaliacao="4.5" :vagas="12" />
-          <ParkingCard nome="Nome do Estacionamento" localizacao="Localização" :avaliacao="4.5" :vagas="5" />
-          <ParkingCard nome="Nome do Estacionamento" localizacao="Localização" :avaliacao="4.5" :vagas="30" />
-        </div>
-        <h1>DIVISAO</h1>
-        <div class="cards-grid">
+
           <ParkingCard
           v-for="estacionamento in estacionamentos.estacionamentos"
           :key="estacionamento.id"
@@ -116,7 +106,8 @@ export default {
           :nome="estacionamento.nome"
           :localizacao="estacionamento.rua"
           :avaliacao="5.0"
-          :vagas="estacionamento.total_vagas" />
+          :vagas="estacionamento.total_vagas"
+          :estacionamento-id="estacionamento.id" />
         </div>
 
       </section>

@@ -1,4 +1,6 @@
-<script>
+<script lang="ts">
+import { navegar } from '@/utils/navegar';
+
 export default {
     name: 'ParkingCard',
     props: {
@@ -6,7 +8,13 @@ export default {
         localizacao: String,
         avaliacao: Number,
         vagas: Number,
-        imagem: String
+        imagem: String,
+        estacionamentoId: Number
+    },
+    methods: {
+      ExibirVagas(){
+        navegar(`/vagas/${this.estacionamentoId}`)
+      }
     }
 }
 </script>
@@ -28,7 +36,7 @@ export default {
                 <span class="estrela">★</span>
                 <span class="nota">{{ avaliacao }}</span>
             </div>
-            <button class="botao-reservar">
+            <button @click="ExibirVagas" class="botao-reservar">
                 <b>Reservar vaga</b>
             </button>
         </div>
@@ -69,7 +77,7 @@ export default {
 .card-imagem-placeholder {
     width: 100%;
     height: 100%;
-    
+
 }
 
 .badge-vagas {
