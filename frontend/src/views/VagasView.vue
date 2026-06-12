@@ -1,11 +1,13 @@
 <script lang="ts">
 import CardVaga from '@/components/CardVaga.vue';
+import HeaderComponent from '@/components/HeaderComponent.vue';
 import { verificarToken } from '@/utils/verificarToken';
 
 export default {
   name: "VagasView",
   components: {
-    CardVaga
+    CardVaga,
+    HeaderComponent
   },
   data() {
     return {
@@ -15,7 +17,7 @@ export default {
       vagasPiso1: Array.from({ length: 10 }, (_, i) => ({id: i + 1, status: 'Disponível'})),
       vagasPiso2: Array.from({ length: 10 }, (_, i) => ({id: i + 11,status: 'Disponível'})),
     }
-  }, 
+  },
   mounted() {
     verificarToken()
     this.ListarVagas()
@@ -38,16 +40,8 @@ export default {
 
 <template>
   <div class="container-vagas">
-    <header class="topo">
-      <div class="logo-spot-livre">
-        <img src="/img/dsin-logo.png" alt="Logo" class="logo-dsin" />
-        <span class="spot">Spot</span><span class="livre">Livre</span>
-      </div>
-      <div class="usuario">
-        <img src="/img/icones/usuario.png" alt="User" class="icone-usuario" />
-        <span>User</span>
-      </div>
-    </header>
+
+    <HeaderComponent/>
 
     <section class="info-estacionamento">
       <img src="/img/dsin-logo.png" alt="Logo" class="logo-hero" />

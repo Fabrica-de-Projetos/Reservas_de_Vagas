@@ -8,8 +8,4 @@ export function verificarToken()
         alert("Acesso não autorizado")
         router.push("/cadastro")
     }
-    else
-    {
-        router.push("/home")
-    }
 }

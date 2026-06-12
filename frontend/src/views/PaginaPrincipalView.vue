@@ -7,6 +7,11 @@ import HeaderComponent from '@/components/HeaderComponent.vue';
 
 export default {
   name: 'HomeView',
+  data(){
+    return{
+      estacionamentos: Object
+    }
+  },
   components: {
     ParkingCard,
     StatsCard,
@@ -14,6 +19,7 @@ export default {
   },
   mounted() {
     verificarToken()
+    this.BuscarEstacionamentos()
   },
   setup() {
     const busca = ref('')
@@ -25,28 +31,24 @@ export default {
     ])
 
     return { busca, stats }
+  },
+  methods: {
+    async BuscarEstacionamentos(){
+
+      const respostaApi = await fetch("https://backend-oh40.onrender.com/api/spotLivre/estacionamentos")
+      .then(resposta => {
+        return resposta.json()
+      })
+
+      this.estacionamentos = respostaApi
+
+    }
   }
 }
 </script>
 
 <template>
   <div class="home-wrapper">
-
-    <!-- navbar -->
-    <!-- <header class="navbar">
-      <div class="logo-spot-livre">
-        <img class="logo-dsin" src="/img/dsin-logo.png" alt="Dsin Logo" />
-        <p class="spot-livre-spot">
-          <b>Spot<span class="spot-livre-livre">livre</span></b>
-        </p>
-      </div>
-      <div class="navbar-usuario">
-        <div class="avatar-circulo">
-          <img src="/img/icones/usuario.png" alt="Usuário" class="avatar-icone" />
-        </div>
-        <span class="usuario-nome">User</span>
-      </div>
-    </header> -->
 
     <HeaderComponent/>
 
@@ -105,6 +107,18 @@ export default {
           <ParkingCard nome="Nome do Estacionamento" localizacao="Localização" :avaliacao="4.5" :vagas="5" />
           <ParkingCard nome="Nome do Estacionamento" localizacao="Localização" :avaliacao="4.5" :vagas="30" />
         </div>
+        <h1>DIVISAO</h1>
+        <div class="cards-grid">
+          <ParkingCard
+          v-for="estacionamento in estacionamentos.estacionamentos"
+          :key="estacionamento.id"
+          :imagem="estacionamento.imagem"
+          :nome="estacionamento.nome"
+          :localizacao="estacionamento.rua"
+          :avaliacao="5.0"
+          :vagas="estacionamento.total_vagas" />
+        </div>
+
       </section>
 
     </main>
