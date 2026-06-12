@@ -79,7 +79,7 @@ export default {
               :numero = "vaga.numero"
               :tipo = "vaga.tipo"
               :vagaId = "vaga.id"
-              imagem="https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2026/05/Neymar-Raphinha-Selecao-e1779992588361.webp?w=884"/>
+              :imagem="dadosEstacionamento.estacionamento.imagem"/>
         </div>
       </div>
     </section>

@@ -51,7 +51,7 @@ import iconeCarro from '../assets/icons/car-insurance.png'
   :horarios="horarios"
   :VagaId ="vagaId"
   @fechar="exibirModal = false"
-  imagem="https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2026/05/Neymar-Raphinha-Selecao-e1779992588361.webp?w=884"/>
+  :imagem="imagem"/>
 
 </template>
 
